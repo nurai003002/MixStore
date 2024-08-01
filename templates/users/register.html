@@ -1,0 +1,109 @@
+{% extends 'include/homepage.html' %}
+{% load static %}
+{% block content %}
+{% include 'include/header.html' %}
+	<div class="header-device-mobile">
+		<div class="wapper">
+			<div class="item mobile-logo">
+				<div class="logo">
+						<img src="{{setting.logo.url}}" alt="img">
+				</div>
+			</div>
+			{% include 'include/search.html' %}
+		
+		</div>
+	</div>
+	<div class="main-content main-content-login">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="breadcrumb-trail breadcrumbs">
+						<ul class="trail-items breadcrumb">
+							<li class="trail-item trail-begin">
+								<a href="{% url 'index' %}">Главная</a>
+							</li>
+							<li class="trail-item trail-end active">
+								Регистрация
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="content-area col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="site-main">
+						<h3 class="custom_blog_title">
+							Регистрация
+						</h3>
+						<div class="customer_login">
+							<div class="row">
+								<div class="col-lg-6 col-md-6 col-sm-12">
+									<div class="login-item">
+										<h5 class="title-login">Зарегистрироваться сейчас</h5>
+										<form class="register" method="POST">
+                                            {% csrf_token %}
+                                            <p class="form-row form-row-wide">
+                                                <label class="text">Имя пользователя</label>
+                                                <input title="name" name="username" type="text" class="input-text">
+                                            </p>
+                                            <p class="form-row form-row-wide">
+												<label class="text">Почта</label>
+												<input title="pass" name="email" type="email" class="input-text">
+											</p>
+											<p class="form-row form-row-wide">
+												<label class="text">Пароль</label>
+												<input title="pass" name="password" type="password" class="input-text">
+											</p>
+                                            <p class="form-row form-row-wide">
+												<label class="text">Подтвердите пароль</label>
+												<input title="pass" name="confirm_password" type="password" class="input-text">
+											</p>
+											<p class="">
+												<input type="submit" name="register_button" class="button-submit" value="Зарегистрироваться">
+											</p>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% include 'include/footer.html' %}
+	<div class="footer-device-mobile">
+		<div class="wapper">
+			<div class="footer-device-mobile-item device-home">
+				<a href="{% url 'index' %}">
+					<span class="icon">
+						<i class="fa fa-home" aria-hidden="true"></i>
+					</span>
+					Главная
+				</a>
+			</div>
+			<div class="footer-device-mobile-item device-home device-cart">
+				<a href="#">
+					<span class="icon">
+						<i class="fa fa-shopping-basket" aria-hidden="true"></i>
+						<span class="count-icon">
+							0
+						</span>
+					</span>
+					<span class="text">Корзина</span>
+				</a>
+			</div>
+			<div class="footer-device-mobile-item device-home device-user">
+				<a href="#">
+					<span class="icon">
+						<i class="fa fa-user" aria-hidden="true"></i>
+					</span>
+					Account
+				</a>
+			</div>
+		</div>
+	</div>
+	<a href="#" class="backtotop">
+		<i class="fa fa-angle-double-up"></i>
+	</a>
+{% endblock %}
