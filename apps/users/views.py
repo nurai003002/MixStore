@@ -38,10 +38,9 @@ def register(request):
             user = User(username=username,email=email, password=make_password(password))
             user.password = make_password(password)
             user.save()
-            # login(request, user)
         return redirect('index') 
 
-    return render(request, 'users/register.html', locals())
+    return render(request, 'user/register.html', locals())
 
 def login1(request):
     setting = Setting.objects.latest('id')
@@ -59,7 +58,7 @@ def login1(request):
             else:
                 messages.error(request, 'Вы ввели неверные данные')
 
-    return render(request, 'users/login.html', locals())
+    return render(request, 'user/login.html', locals())
 
 def user_logout(request):
     logout(request)
