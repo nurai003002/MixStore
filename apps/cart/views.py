@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from apps.telegram_bot.views import get_text
 
-from apps.settings.models import Setting, About
+from apps.settings.models import Setting
 from apps.products.models import Product, Category
 from apps.cart.models import Cart, CartItem
 from apps.billings.models import Billings
