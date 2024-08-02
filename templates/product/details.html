@@ -1,0 +1,360 @@
+{% extends 'include/homepage.html' %}
+{% load static %}
+{% block content %}
+{% include 'include/header.html' %}
+<div class="header-device-mobile">
+    <div class="wapper">
+        <div class="item mobile-logo">
+            <div class="logo">
+                <a href="#">
+                    <img src="{% static 'assets/images/logo.png' %}" alt="img">
+                </a>
+            </div>
+        </div>
+        <div class="item item mobile-search-box has-sub">
+            <a href="#">
+						<span class="icon">
+							<i class="fa fa-search" aria-hidden="true"></i>
+						</span>
+            </a>
+            <div class="block-sub">
+                <a href="#" class="close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
+                <div class="header-searchform-box">
+                    <form class="header-searchform">
+                        <div class="searchform-wrap">
+                            <input type="text" class="search-input" placeholder="Enter keywords to search...">
+                            <input type="submit" class="submit button" value="Search">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="item mobile-settings-box has-sub">
+            <a href="#">
+						<span class="icon">
+							<i class="fa fa-cog" aria-hidden="true"></i>
+						</span>
+            </a>
+            <div class="block-sub">
+                <a href="#" class="close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
+                <div class="block-sub-item">
+                    <h5 class="block-item-title">Currency</h5>
+                    <form class="currency-form ysera-language">
+                        <ul class="ysera-language-wrap">
+                            <li class="active">
+                                <a href="#">
+											<span>
+												English (USD)
+											</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+											<span>
+												French (EUR)
+											</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+											<span>
+												Japanese (JPY)
+											</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="item menu-bar">
+            <a class=" mobile-navigation  menu-toggle" href="#">
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="main-content main-content-details single no-sidebar">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-trail breadcrumbs">
+                    <ul class="trail-items breadcrumb">
+                        <li class="trail-item trail-begin">
+                            <a href="{% url 'index' %}">Главная</a>
+                        </li>
+                        <li class="trail-item trail-end active">
+                            {{product_detail.title}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="content-area content-details full-width col-lg-9 col-md-8 col-sm-12 col-xs-12">
+                <div class="site-main">
+                    <div class="details-product">
+                        <div class="details-thumd">
+                            <div class="image-preview-container image-thick-box image_preview_container">
+                                <img id="img_zoom" data-zoom-image="{{product_detail.image.url}}"
+                                     src="{{product_detail.image.url}}" alt="img">
+                                <a href="#" class="btn-zoom open_qv"><i class="fa fa-search" aria-hidden="true"></i></a>
+                            </div>
+                            <div class="product-preview image-small product_preview">
+                                <div id="thumbnails" class="thumbnails_carousel owl-carousel" data-nav="true"
+                                     data-autoplay="false" data-dots="false" data-loop="false" data-margin="10"
+                                     data-responsive='{"0":{"items":3},"480":{"items":3},"600":{"items":3},"1000":{"items":3}}'>
+                                    <a href="#" data-image="{{product_detail.image.url}}"
+                                       data-zoom-image="{{product_detail.image.url}}" class="active">
+                                        <img src="{{product_detail.image.url}}"
+                                             data-large-image="{{product_detail.image.url}}" alt="img">
+                                    </a>
+                                    {% for product in product_detail.product_image.all %}
+                                    <a href="#" data-image="{{product.image.url}}"
+                                       data-zoom-image="{{product.image.url}}">
+                                        <img src="{{product.image.url}}"
+                                             data-large-image="{{product.image.url}}" alt="img">
+                                    </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="details-infor">
+                            <h1 class="product-title">
+                                {{product_detail.title}}
+                            </h1>
+                            {% if product_detail.status %}
+                            <div class="availability">
+                                Статус:
+                                <a href="#">{{product_detail.status}}</a>
+                            </div>
+                            {% endif %}
+                            <div class="price">
+                                <span>{{product_detail.price}} сом</span>
+                            </div>
+                            <div class="product-details-description">
+                                {% for product in product_detail.product_feature.all %}
+                                <ul>
+                                    <li>{{product.feature}}</li>
+                                </ul>
+                                {% endfor %}
+                            </div>
+                            <div class="variations">
+                                <div class="attribute attribute_color">
+                                    <div class="color-text text-attribute">
+                                        Цвета:
+                                    </div>
+                                    <div class="list-color list-item">
+                                        <a href="?color=WHITE" class="color1" style="background-color: #FFFFFF;"></a>
+                                        <a href="?color=BLACK" class="color2" style="background-color: #000000;"></a>
+                                        <a href="?color=GRAY" class="color3 active" style="background-color: #808080;"></a>
+                                        <a href="?color=BROWN" class="color4" style="background-color: #c09578;"></a>
+                                    </div>
+                                </div>
+                                <div class="attribute attribute_size">
+                                    <div class="size-text text-attribute">
+                                        Размеры:
+                                    </div>
+                                    <div class="list-size list-item">
+                                        <p class="">{{product_detail.size}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="group-button">
+                                <div class="yith-wcwl-add-to-wishlist">
+                                    <div class="yith-wcwl-add-button">
+                                        <a href="#">В избранные</a>
+                                    </div>
+                                </div>
+                                <div class="quantity-add-to-cart">
+                                    <div class="quantity">
+                                        <div class="control">
+                                            <a class="btn-number qtyminus quantity-minus" href="#">-</a>
+                                            <input type="text" data-step="1" data-min="0" value="1" title="Qty"
+                                                   class="input-qty qty" size="4">
+                                            <a href="#" class="btn-number qtyplus quantity-plus">+</a>
+                                        </div>
+                                    </div>
+                                    <button class="single_add_to_cart_button button">В корзину</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-details-product">
+                        <ul class="tab-link">
+                            <li class="">
+                                <a data-toggle="tab" aria-expanded="true" href="#reviews">Reviews</a>
+                            </li>
+                        </ul>
+                        <div class="tab-container">
+                            <div id="reviews" class="tab-panel">
+                                <div class="reviews-tab">
+                                    <div class="comments">
+                                        <h2 class="reviews-title">
+                                            {{ reviews.count }} отзыв(ов) для
+                                            <span>{{product_detail.title}}</span>
+                                        </h2>
+                                        <ol class="commentlist">
+                                            <li class="conment">
+                                                {% for review in reviews %}
+                                                <div class="conment-container">
+                                                    <a href="#" class="avatar">
+                                                        <img src="{% static 'assets/Group 44.png' %}" alt="img" style="border-radius: 50%; size: 10px;">
+                                                    </a>
+                                                    <div class="comment-text">
+                                                        <p class="meta">
+                                                            <strong class="author">{{user.username}}</strong>
+                                                            <span>-</span>
+                                                            <span class="time">{{ review.created_at }}</span>
+                                                        </p>
+                                                        <div class="description">
+                                                            <p>{{review.text}}</p>
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                    <div class="review_form_wrapper">
+                                        <div class="review_form">
+                                            <div class="comment-respond">
+                                                <form method="POST" class="comment-form-review">
+                                                    {% csrf_token %}
+                                                    <p class="comment-form-comment">
+                                                        <label>
+                                                            Ваш отзыв
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                        <textarea title="review" id="comment" name="text" cols="45" rows="8" style="border: 2px solid #c09578; border-radius: 10px;" ></textarea>
+                                                    </p>
+                                                    <p class="comment-form-email">
+                                                        <label>
+                                                            Почта
+                                                            <span class="">*</span>
+                                                        </label>
+                                                        <input title="email" id="email" name="email" type="email" value="" style="border: 2px solid #c09578; border-radius: 10px;">
+                                                    </p>
+                                                    <p class="form-submit">
+                                                        <input name="submit" type="submit" name="review_form" id="submit" class="submit" value="Опубликовать" style="border-radius: 8px;">
+                                                    </p>
+                                                </form>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear: left;"></div>
+                    <div class="related products product-grid">
+                        <h2 class="product-grid-title">Вам также может понравится</h2>
+                        <div class="owl-products owl-slick equal-container nav-center"  data-slick ='{"autoplay":false, "autoplaySpeed":1000, "arrows":true, "dots":false, "infinite":true, "speed":800, "rows":1}' data-responsive='[{"breakpoint":"2000","settings":{"slidesToShow":3}},{"breakpoint":"1200","settings":{"slidesToShow":2}},{"breakpoint":"992","settings":{"slidesToShow":2}},{"breakpoint":"480","settings":{"slidesToShow":1}}]'>
+                            {% for product in random_products %}
+                            <div class="product-item style-1">
+                                <div class="product-inner equal-element">
+                                    <div class="product-top">
+										{% if product.id in new_products_indices %}
+										<div class="flash">
+											<span class="onnew">
+												<span class="text">
+													new
+												</span>
+											</span>
+										</div>
+										{% endif %}
+									</div>
+                                    <div class="product-thumb">
+                                        <div class="thumb-inner">
+                                            <a href="{% url 'product_detail' product.id %}">
+                                                <img src="{{product.image.url}}" alt="img">
+                                            </a>
+                                            <div class="thumb-group">
+                                                <div class="yith-wcwl-add-to-wishlist">
+                                                    <div class="yith-wcwl-add-button">
+                                                        <a href="#">В избранные</a>
+                                                    </div>
+                                                </div>
+                                                <div class="loop-form-add-to-cart">
+                                                    <button class="single_add_to_cart_button button">В корзину
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-info">
+                                        <h5 class="product-name product_title">
+                                            <a href="#">{{product.title}}</a>
+                                        </h5>
+                                        <div class="group-info">
+                                            <div class="price">
+                                                <del>
+                                                    {{product.price}} сом
+                                                </del>
+                                                <ins>
+                                                    {{product.old_price}} сом
+                                                </ins>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'include/footer.html' %}
+<div class="footer-device-mobile">
+    <div class="wapper">
+        <div class="footer-device-mobile-item device-home">
+            <a href="index.html">
+					<span class="icon">
+						<i class="fa fa-home" aria-hidden="true"></i>
+					</span>
+                Home
+            </a>
+        </div>
+        <div class="footer-device-mobile-item device-home device-wishlist">
+            <a href="#">
+					<span class="icon">
+						<i class="fa fa-heart" aria-hidden="true"></i>
+					</span>
+                Wishlist
+            </a>
+        </div>
+        <div class="footer-device-mobile-item device-home device-cart">
+            <a href="#">
+					<span class="icon">
+						<i class="fa fa-shopping-basket" aria-hidden="true"></i>
+						<span class="count-icon">
+							0
+						</span>
+					</span>
+                <span class="text">Cart</span>
+            </a>
+        </div>
+        <div class="footer-device-mobile-item device-home device-user">
+            <a href="#">
+					<span class="icon">
+						<i class="fa fa-user" aria-hidden="true"></i>
+					</span>
+                Account
+            </a>
+        </div>
+    </div>
+</div>
+<a href="#" class="backtotop">
+    <i class="fa fa-angle-double-up"></i>
+</a>
+{% endblock %}
