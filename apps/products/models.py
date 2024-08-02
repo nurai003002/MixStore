@@ -88,6 +88,7 @@ class Product(models.Model):
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
 
+
 class ProductImage(models.Model):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE,
@@ -107,3 +108,52 @@ class ProductImage(models.Model):
     class Meta:
         verbose_name = "Фотография торава"
         verbose_name_plural = "Фотографии товаров"
+
+
+class ProductFeature(models.Model):
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE,
+        related_name="product_feature",
+        verbose_name="Товар"
+    )
+    feature = models.CharField(
+        max_length=255,
+        verbose_name="Характиристика товары",
+    )
+
+    def __str__(self):
+        return f"{self.product} - {self.feature}"
+    
+    class Meta:
+        verbose_name = "Характиристика торава"
+        verbose_name_plural = "Характиристики товаров"
+
+class ProductReview(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name="user_reviews",
+        verbose_name="Пользователь"
+    )
+    email = models.EmailField(
+        verbose_name = 'Почта',
+        blank=True, null=True,
+    )
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE,
+        related_name='reviews',
+        verbose_name="Название товара"
+    )
+    text = models.TextField(
+        verbose_name="Текст для отзыва"
+    )
+    created_at = models.DateField(
+        auto_now_add=True,
+        verbose_name='Дата создания'
+    )
+
+    def __str__(self):
+        return f"Отзыв с {self.user.username} для {self.product.title}"
+
+    class Meta:
+        verbose_name = "Отзыв товара"
+        verbose_name_plural = "Отзывы товаров"
