@@ -1,86 +1,87 @@
 {% load static %}
-<header class="header style7">
+<header class="header style2">
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-left">
+                <div class="header-message">
+                    Welcome to our online store!
+                </div>
+            </div>
+            <div class="top-bar-right">
+                <div class="header-language">
+                    <div class="ysera-language ysera-dropdown">
+                        <a href="#" class="active language-toggle" data-ysera="ysera-dropdown">
+								<span>
+									English (USD)
+								</span>
+                        </a>
+                        <ul class="ysera-submenu">
+                            <li class="switcher-option">
+                                <a href="#">
+										<span>
+											French (EUR)
+										</span>
+                                </a>
+                            </li>
+                            <li class="switcher-option">
+                                <a href="#">
+										<span>
+											Japanese (JPY)
+										</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="header-user-links">
+                    <li>
+                        <a href="login.html">Login or Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="main-header">
             <div class="row">
-                <div class="col-lg-3 col-sm-4 col-md-3 col-xs-7 col-ts-12 header-element">
-                    <div class="logo">
-                        <a href="{% url 'index' %}">
-                            <img src="{{setting.logo.url}}" alt="img">
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-7 col-sm-8 col-md-6 col-xs-5 col-ts-12">
+                <div class="col-lg-4 col-sm-6 col-md-4 col-xs-7 col-ts-12 header-element">
                     <div class="block-search-block">
-                        <form class="form-search form-search-width-category">
+                        <form class="form-search">
                             <div class="form-content">
                                 <div class="inner">
-                                    <input type="text" class="input" name="s" value="" placeholder="Поиск...">
+                                    <input type="text" class="input" name="s" value="" placeholder="Search here">
+                                    <button class="btn-search" type="submit">
+                                        <span class="icon-search"></span>
+                                    </button>
                                 </div>
-                                <button class="btn-search" type="submit">
-                                    <span class="icon-search"></span>
-                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
-                <div class="col-lg-2 col-sm-12 col-md-3 col-xs-12 col-ts-12">
+                <div class="col-lg-4 col-sm-6 col-md-4 col-xs-5 col-ts-12">
+                    <div class="logo">
+                        <a href="index.html">
+                            <img src="assets/images/logo.png" alt="logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12 col-ts-12">
                     <div class="header-control">
                         <div class="block-minicart ysera-mini-cart block-header ysera-dropdown">
                             <a href="javascript:void(0);" class="shopcart-icon" data-ysera="ysera-dropdown">
                                 Cart
                                 <span class="count">
-									{{cart_items_count}}   
+									0
 									</span>
                             </a>
                             <div class="no-product ysera-submenu">
                                 <p class="text">
-                                    У вас 
+                                    You have
                                     <span>
-											 {{cart_items_count}} товаров
+											 0 item(s)
 										</span>
-                                    в корзине
+                                    in your bag
                                 </p>
-                            </div>
-                        </div>
-                        <div class="block-account block-header ysera-dropdown">
-                            <a href="javascript:void(0);" data-ysera="ysera-dropdown">
-                                <span class="flaticon-user"></span>
-                            </a>
-                            <div class="header-account ysera-submenu">
-                                <div class="header-user-form-tabs">
-                                    <ul class="tab-link">
-                                        <li class="active">
-                                            <a data-toggle="tab" aria-expanded="true" href="#header-tab-login">пользователь</a>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-container">
-                                        <div id="header-tab-login" class="tab-panel active">
-                                            {% if user.is_authenticated %}
-                                                <!-- Если пользователь вошел в систему -->
-                                                <div class="loop-form-add-to-cart">
-                                                    <a href="{% url 'user_logout' %}" class="single_add_to_cart_button button">Выйти</a>
-                                                </div>
-                                            {% else %}
-                                                <!-- Если пользователь не вошел в систему -->
-                                                <div class="loop-form-add-to-cart">
-                                                    <a href="{% url 'user_register' %}" class="single_add_to_cart_button button">Зарегистрироваться</a>
-                                                </div>
-                                                <div class="loop-form-add-to-cart">
-                                                    <a href="{% url 'user_login' %}" class="single_add_to_cart_button button">Войти</a>
-                                                </div>
-                                            {% endif %}
-                                            <style>
-                                                .loop-form-add-to-cart {
-                                                    margin-left: 20px;
-                                                    margin: 10px;
-                                                }
-                                            </style>      
-                                        </div>
-                                    </div>
-                                    
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <a class="menu-bar mobile-navigation menu-toggle" href="#">
@@ -96,45 +97,130 @@
     <div class="header-nav-container">
         <div class="container">
             <div class="header-nav-wapper main-menu-wapper">
-                <div class="vertical-wapper block-nav-categori">
-                    <div class="block-title">
-						<span class="icon-bar">
-							<span></span>
-							<span></span>
-							<span></span>
-						</span>
-                        <span class="text">Катигории</span>
-                    </div>
-                    <div class="block-content verticalmenu-content">
-                        <ul class="ysera-nav-vertical vertical-menu ysera-clone-mobile-menu">
-                            {% for category in categories %}
-                            <li class="menu-item">
-                                <a href="{% url 'index' %}" class="ysera-menu-item-title" title="{{category.title}}">{{category.title}}</a>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
                 <div class="header-nav">
                     <div class="container-wapper">
                         <ul class="ysera-clone-mobile-menu ysera-nav main-menu " id="menu-main-menu">
-                            <li class="menu-item  menu-item">
-                                <a href="{% url 'index' %}" class="ysera-menu-item-title" title="Home">Главная</a>
+                            <li class="menu-item  menu-item-has-children">
+                                <a href="index.html" class="ysera-menu-item-title" title="Home">Home</a>
+                                <span class="toggle-submenu"></span>
+                                <ul class="submenu">
+                                    <li class="menu-item">
+                                        <a href="index.html">Home 01</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="home2.html">Home 02</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="home3.html">Home 03</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item menu-item-has-children">
+                                <a href="gridproducts.html" class="ysera-menu-item-title" title="Shop">Shop</a>
+                                <span class="toggle-submenu"></span>
+                                <ul class="submenu">
+                                    <li class="menu-item">
+                                        <a href="gridproducts.html">Grid Fullwidth</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="gridproducts_leftsidebar.html">Grid Left sidebar</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="gridproducts_bannerslider.html">Grid Bannerslider</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="listproducts.html">List</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item  menu-item-has-children item-megamenu">
+                                <a href="#" class="ysera-menu-item-title" title="Pages">Pages</a>
+                                <span class="toggle-submenu"></span>
+                                <div class="submenu mega-menu menu-page">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 menu-page-item">
+                                            <div class="ysera-custommenu default">
+                                                <h2 class="widgettitle">Shop Pages</h2>
+                                                <ul class="menu">
+                                                    <li class="menu-item">
+                                                        <a href="shoppingcart.html">Shopping Cart</a>
+                                                    </li>
+                                                    <li class="menu-item">
+                                                        <a href="checkout.html">Checkout</a>
+                                                    </li>
+                                                    <li class="menu-item">
+                                                        <a href="contact.html">Contact us</a>
+                                                    </li>
+                                                    <li class="menu-item">
+                                                        <a href="404page.html">404</a>
+                                                    </li>
+                                                    <li class="menu-item">
+                                                        <a href="login.html">Login/Register</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 menu-page-item">
+                                            <div class="ysera-custommenu default">
+                                                <h2 class="widgettitle">Product</h2>
+                                                <ul class="menu">
+                                                    <li class="menu-item">
+                                                        <a href="productdetails-fullwidth.html">Product Fullwidth</a>
+                                                    </li>
+                                                    <li class="menu-item">
+                                                        <a href="productdetails-leftsidebar.html">Product left
+                                                            sidebar</a>
+                                                    </li>
+                                                    <li class="menu-item">
+                                                        <a href="productdetails-rightsidebar.html">Product right
+                                                            sidebar</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 menu-page-item">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 menu-page-item">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="menu-item  menu-item-has-children">
+                                <a href="inblog_right-siderbar.html" class="ysera-menu-item-title"
+                                   title="Blogs">Blogs</a>
+                                <span class="toggle-submenu"></span>
+                                <ul class="submenu">
+                                    <li class="menu-item menu-item-has-children">
+                                        <a href="#" class="ysera-menu-item-title" title="Blog Style">Blog Style</a>
+                                        <span class="toggle-submenu"></span>
+                                        <ul class="submenu">
+                                            <li class="menu-item">
+                                                <a href="bloggrid.html">Grid</a>
+                                            </li>
+                                            <li class="menu-item">
+                                                <a href="bloglist.html">List</a>
+                                            </li>
+                                            <li class="menu-item">
+                                                <a href="bloglist-leftsidebar.html">List Sidebar</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item menu-item-has-children">
+                                        <a href="#" class="ysera-menu-item-title" title="Post Layout">Post Layout</a>
+                                        <span class="toggle-submenu"></span>
+                                        <ul class="submenu">
+                                            <li class="menu-item">
+                                                <a href="inblog_left-siderbar.html">Left Sidebar</a>
+                                            </li>
+                                            <li class="menu-item">
+                                                <a href="inblog_right-siderbar.html">Right Sidebar</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
                             </li>
                             <li class="menu-item">
-                                <a href="{% url 'about' %}" class="ysera-menu-item-title" title="About">О нас</a>
-                            </li>
-                            <li class="menu-item menu-item">
-                                <a href="{% url 'product_index' %}" class="ysera-menu-item-title" title="Shop">Магазин</a>
-                            </li>
-                            <li class="menu-item  menu-item">
-                                <a href="{% url 'cart' %}" class="ysera-menu-item-title" title="Cart">Корзина</a>
-                            </li>
-                            <li class="menu-item  menu-item">
-                                <a href="{% url 'contact' %}" class="ysera-menu-item-title" title="Contact">Контакт</a>
-                            </li>
-                            <li class="menu-item  menu-item">
-                                <a href="{% url 'checkout' %}" class="ysera-menu-item-title" title="Checkout">заказать</a>
+                                <a href="about.html" class="ysera-menu-item-title" title="About">About</a>
                             </li>
                         </ul>
                     </div>
