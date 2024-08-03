@@ -3,7 +3,7 @@ from django.shortcuts import render
 from apps.settings.models import Setting, Contacts
 from apps.secondary.models import Slider, Service, Team
 from apps.products.models import Product, Category
-from apps.cart.models import Cart
+from apps.cart.models import CartItem
 from apps.telegram_bot.views import get_text
 # Create your views here.
 
@@ -12,7 +12,7 @@ def index(request):
     slider = Slider.objects.all()
     products = Product.objects.all()
     categories = Category.objects.all()
-    cart_items = Cart.objects.all()  
+    cart_items = CartItem.objects.all()  
     cart_items_count = cart_items.count()
     product_trand =  Product.objects.all()[:6]
     return render(request, 'base/index.html', locals())
@@ -22,7 +22,7 @@ def contact(request):
     setting = Setting.objects.latest('id')
     slider = Slider.objects.all()
     service = Service.objects.latest('id')
-    cart_items = Cart.objects.all()  
+    cart_items = CartItem.objects.all()  
     cart_items_count = cart_items.count()
     categories = Category.objects.all()
     team = Team.objects.all()

@@ -1,0 +1,35 @@
+{% load static %}
+<div class="footer-device-mobile">
+    <div class="wapper">
+        <div class="footer-device-mobile-item device-home">
+            <a href="{% url 'index' %}">
+					<span class="icon">
+						<i class="fa fa-home" aria-hidden="true"></i>
+					</span>
+                Главная
+            </a>
+        </div>
+        <div class="footer-device-mobile-item device-home device-cart">
+            <a href="{% url 'cart' %}">
+					<span class="icon">
+						<i class="fa fa-shopping-basket" aria-hidden="true"></i>
+						<span class="count-icon">
+							{{cart_items_count}}
+						</span>
+					</span>
+                <span class="text">Корзина</span>
+            </a>
+        </div>
+        <div class="footer-device-mobile-item device-home device-user">
+            <a href="{% url 'index' %}">
+					<span class="icon">
+						<i class="fa fa-user" aria-hidden="true"></i>
+					</span>
+                Аккаунт
+            </a>
+        </div>
+    </div>
+</div>
+<a href="#" class="backtotop">
+    <i class="fa fa-angle-double-up"></i>
+</a>
