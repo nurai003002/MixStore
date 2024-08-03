@@ -1,15 +1,5 @@
 {% load static %}
 <header class="header style2">
-    <div class="top-bar">
-        <div class="container">
-            <div class="top-bar-left">
-                <div class="header-message">
-                Добро пожаловать в наш магазин!
-                </div>
-            </div>
-           
-        </div>
-    </div>
     <div class="container">
         <div class="main-header">
             <div class="row">
@@ -34,6 +24,12 @@
                         </a>
                     </div>
                 </div>
+                <style>
+                    .logo {
+                        margin-top: -70px;
+                    }
+
+                </style>
                 <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12 col-ts-12">
                     <div class="header-control">
                         <div class="block-minicart ysera-mini-cart block-header ysera-dropdown">
@@ -61,20 +57,17 @@
                     <div class="container-wapper">
                         <ul class="ysera-clone-mobile-menu ysera-nav main-menu " id="menu-main-menu">
                             <li class="menu-item  menu-item">
-                                <a href="{% url 'index' %}" class="ysera-menu-item-title" title="Home">Главная</a>
-                            </li>
-                            <li class="menu-item  menu-item item-megamenu">
-                                <a href="#" class="ysera-menu-item-title" title="Pages">О нас</a>
+                                <a href="{% url 'index' %}" class="ysera-menu-item-title" title="Главная">Главная</a>
                             </li>
                             <li class="menu-item menu-item">
-                                <a href="{% url 'product_index' %}" class="ysera-menu-item-title" title="Shop">Магазин</a>
+                                <a href="{% url 'product_index' %}" class="ysera-menu-item-title" title="Магазин">Магазин</a>
                             </li>
                             <li class="menu-item  menu-item">
                                 <a href="inblog_right-siderbar.html" class="ysera-menu-item-title"
-                                   title="Blogs">Контакты</a>
+                                   title="Контакты">Контакты</a>
                             </li>
                             <li class="menu-item">
-                                <a href="about.html" class="ysera-menu-item-title" title="About">Заказать</a>
+                                <a href="about.html" class="ysera-menu-item-title" title="Заказать">Заказать</a>
                             </li>
                         </ul>
                     </div>
