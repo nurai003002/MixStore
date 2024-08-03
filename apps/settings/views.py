@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from apps.settings.models import Setting, Contacts
-from apps.secondary.models import Slider, Service, Team
+from apps.secondary.models import Slider, Service, Team, Review
 from apps.products.models import Product, Category
 from apps.cart.models import CartItem
 from apps.telegram_bot.views import get_text
@@ -14,7 +14,9 @@ def index(request):
     categories = Category.objects.all()
     cart_items = CartItem.objects.all()  
     cart_items_count = cart_items.count()
+    product_new = Product.objects.all().order_by('id')[:8]
     product_trand =  Product.objects.all()[:6]
+    all_review = Review.objects.all()
     return render(request, 'base/index.html', locals())
 
 

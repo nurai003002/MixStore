@@ -9,7 +9,8 @@ from apps.users.models import User
 
 def product(request):
     setting = Setting.objects.latest('id')
-    products = Product.objects.all().order_by('-id')  
+    products = Product.objects.all().order_by('-id') 
+    
     categories = Category.objects.all()
     cart_items = Cart.objects.all()
     cart_items_count = cart_items.count()
@@ -58,3 +59,13 @@ def product_detail(request, id):
                 return redirect('product_detail', id=id)
             
     return render(request, 'product/details.html', locals())
+
+
+def product_list(request, category_id=None):
+    categories = Category.objects.all()
+    if category_id:
+        products = Product.objects.filter(category_id=category_id).order_by('-id')
+    else:
+        products = Product.objects.all().order_by('-id')
+
+    return render(request, 'product/products.html', locals())

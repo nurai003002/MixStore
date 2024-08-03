@@ -6,12 +6,16 @@ class Slider(models.Model):
         upload_to='slider_image/',
         verbose_name='Фотография'
     )
-    title = models.CharField(
+    main_title = models.CharField(
         max_length = 255,
         verbose_name = 'Заголовок'
     ) 
-    old_price = models.IntegerField(
-        verbose_name = 'Старая цена'
+    title = models.CharField(
+        max_length = 255,
+        verbose_name = 'Название товара'
+    ) 
+    price = models.IntegerField(
+        verbose_name = 'цена'
     )
     
 
@@ -76,3 +80,26 @@ class Team(models.Model):
         verbose_name = 'Команда'
         verbose_name_plural = 'Команда'
         
+class Review(models.Model):
+    image = models.ImageField(
+        upload_to='review/image',
+        verbose_name='Фотография'
+    )
+    name = models.CharField(
+        max_length=100,
+        verbose_name='Имя'
+    ) 
+    position = models.CharField(
+        max_length=255,
+        verbose_name='Должность'
+    )
+    comment = models.TextField(
+        verbose_name = 'Комментарий'
+    )
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
