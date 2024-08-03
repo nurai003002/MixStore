@@ -37,20 +37,12 @@
                 <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12 col-ts-12">
                     <div class="header-control">
                         <div class="block-minicart ysera-mini-cart block-header ysera-dropdown">
-                            <a href="javascript:void(0);" class="shopcart-icon" data-ysera="ysera-dropdown">
+                            <a href="{% url 'cart' %}" class="shopcart-icon" >
                                 Корзина
                                 <span class="count">
-									0
+									{{cart_items_count}}
 									</span>
                             </a>
-                            <div class="no-product ysera-submenu">
-                                <p class="text">
-                                    У вас есть
-                                    <span>
-											 0 товар(ов)
-										</span>
-                                </p>
-                            </div>
                         </div>  
                         <a class="menu-bar mobile-navigation menu-toggle" href="#">
                             <span></span>

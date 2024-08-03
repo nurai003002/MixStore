@@ -2,84 +2,7 @@
 {% load static %}
 {% block content %}
 {% include 'include/header.html' %}
-<div class="header-device-mobile">
-    <div class="wapper">
-        <div class="item mobile-logo">
-            <div class="logo">
-                <a href="#">
-                    <img src="{% static 'assets/images/logo.png' %}" alt="img">
-                </a>
-            </div>
-        </div>
-        <div class="item item mobile-search-box has-sub">
-            <a href="#">
-						<span class="icon">
-							<i class="fa fa-search" aria-hidden="true"></i>
-						</span>
-            </a>
-            <div class="block-sub">
-                <a href="#" class="close">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </a>
-                <div class="header-searchform-box">
-                    <form class="header-searchform">
-                        <div class="searchform-wrap">
-                            <input type="text" class="search-input" placeholder="Enter keywords to search...">
-                            <input type="submit" class="submit button" value="Search">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="item mobile-settings-box has-sub">
-            <a href="#">
-						<span class="icon">
-							<i class="fa fa-cog" aria-hidden="true"></i>
-						</span>
-            </a>
-            <div class="block-sub">
-                <a href="#" class="close">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </a>
-                <div class="block-sub-item">
-                    <h5 class="block-item-title">Currency</h5>
-                    <form class="currency-form ysera-language">
-                        <ul class="ysera-language-wrap">
-                            <li class="active">
-                                <a href="#">
-											<span>
-												English (USD)
-											</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-											<span>
-												French (EUR)
-											</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-											<span>
-												Japanese (JPY)
-											</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="item menu-bar">
-            <a class=" mobile-navigation  menu-toggle" href="#">
-                <span></span>
-                <span></span>
-                <span></span>
-            </a>
-        </div>
-    </div>
-</div>
+{% include 'include/mobile_header.html' %}
 <div class="main-content main-content-details single no-sidebar">
     <div class="container">
         <div class="row">
@@ -167,11 +90,6 @@
                                 </div>
                             </div>
                             <div class="group-button">
-                                <div class="yith-wcwl-add-to-wishlist">
-                                    <div class="yith-wcwl-add-button">
-                                        <a href="#">В избранные</a>
-                                    </div>
-                                </div>
                                 <div class="quantity-add-to-cart">
                                     <div class="quantity">
                                         <div class="control">
@@ -181,7 +99,7 @@
                                             <a href="#" class="btn-number qtyplus quantity-plus">+</a>
                                         </div>
                                     </div>
-                                    <button class="single_add_to_cart_button button">В корзину</button>
+                                    <a href="{% url 'add_to_cart' product_detail.id %}" class="single_add_to_cart_button button">В корзину</a>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +107,7 @@
                     <div class="tab-details-product">
                         <ul class="tab-link">
                             <li class="">
-                                <a data-toggle="tab" aria-expanded="true" href="#reviews">Reviews</a>
+                                <a data-toggle="tab" aria-expanded="true" href="#reviews">Отзывы</a>
                             </li>
                         </ul>
                         <div class="tab-container">
@@ -277,14 +195,9 @@
                                                 <img src="{{product.image.url}}" alt="img">
                                             </a>
                                             <div class="thumb-group">
-                                                <div class="yith-wcwl-add-to-wishlist">
-                                                    <div class="yith-wcwl-add-button">
-                                                        <a href="#">В избранные</a>
-                                                    </div>
-                                                </div>
-                                                <div class="loop-form-add-to-cart">
-                                                    <button class="single_add_to_cart_button button">В корзину
-                                                    </button>
+                                                <div class="loop-form-add-to-cart"> 
+                                                    <a href="{% url 'add_to_cart' product.id %}" class="single_add_to_cart_button button">В корзину
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -295,12 +208,16 @@
                                         </h5>
                                         <div class="group-info">
                                             <div class="price">
-                                                <del>
-                                                    {{product.price}} сом
-                                                </del>
-                                                <ins>
-                                                    {{product.old_price}} сом
-                                                </ins>
+                                                {% if product.old_price %}
+                                                    <del>
+                                                        {{product.old_price}} сом
+                                                    </del>
+                                                    {% endif %}
+                                                    {% if product.price %}
+                                                    <ins>
+                                                        {{product.price}} сом
+                                                    </ins>
+                                                    {% endif %}
                                             </div>
                                         </div>
                                     </div>
@@ -315,46 +232,6 @@
     </div>
 </div>
 {% include 'include/footer.html' %}
-<div class="footer-device-mobile">
-    <div class="wapper">
-        <div class="footer-device-mobile-item device-home">
-            <a href="index.html">
-					<span class="icon">
-						<i class="fa fa-home" aria-hidden="true"></i>
-					</span>
-                Home
-            </a>
-        </div>
-        <div class="footer-device-mobile-item device-home device-wishlist">
-            <a href="#">
-					<span class="icon">
-						<i class="fa fa-heart" aria-hidden="true"></i>
-					</span>
-                Wishlist
-            </a>
-        </div>
-        <div class="footer-device-mobile-item device-home device-cart">
-            <a href="#">
-					<span class="icon">
-						<i class="fa fa-shopping-basket" aria-hidden="true"></i>
-						<span class="count-icon">
-							0
-						</span>
-					</span>
-                <span class="text">Cart</span>
-            </a>
-        </div>
-        <div class="footer-device-mobile-item device-home device-user">
-            <a href="#">
-					<span class="icon">
-						<i class="fa fa-user" aria-hidden="true"></i>
-					</span>
-                Account
-            </a>
-        </div>
-    </div>
-</div>
-<a href="#" class="backtotop">
-    <i class="fa fa-angle-double-up"></i>
-</a>
+{% include 'include/mobile_footer.html' %}
+
 {% endblock %}
