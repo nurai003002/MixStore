@@ -1,0 +1,202 @@
+<style>
+    .main-content-login {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+    }
+
+    .content-area {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .login-item {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
+
+    .login-item h5 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .register .input-text {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .register .button-submit {
+        width: 100%;
+        padding: 10px;
+        background-color: #c09578;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .register .button-submit:hover {
+        background-color: #b5846a;
+    }
+
+</style>
+{% extends 'include/homepage.html' %}
+{% load static %}
+{% block content %}
+
+    {% include 'include/header.html' %}
+    <div class="header-device-mobile">
+        <div class="wapper">
+            <div class="item mobile-logo">
+                <div class="logo">
+                    <a href="#">
+                        <img src="{% static 'assets/images/logo.png' %}" alt="img">
+                    </a>
+                </div>
+            </div>
+            <div class="item item mobile-search-box has-sub">
+                <a href="#">
+                        <span class="icon">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </span>
+                </a>
+                <div class="block-sub">
+                    <a href="#" class="close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
+                    <div class="header-searchform-box">
+                        <form class="header-searchform">
+                            <div class="searchform-wrap">
+                                <input type="text" class="search-input" placeholder="Enter keywords to search...">
+                                <input type="submit" class="submit button" value="Search">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="item menu-bar">
+                <a class=" mobile-navigation  menu-toggle" href="#">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="main-content main-content-login">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-trail breadcrumbs">
+                        <ul class="trail-items breadcrumb">
+                            <li class="trail-item trail-begin">
+                                <a href="{% url 'index' %}">Главная страница</a>
+                            </li>
+                            <li class="trail-item trail-end active">
+                                Регистрация
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="content-area col-lg-6 col-md-8 col-sm-12 col-xs-12">
+                    <div class="site-main">
+                        <h3 class="custom_blog_title">
+                            Регистрация
+                        </h3>
+                        <div class="login-item">
+                            <h5 class="title-login">Зарегистрироваться</h5>
+                            <form class="register" method="POST" action="">
+                                {% csrf_token %}
+                                <p class="form-row form-row-wide">
+                                    <label class="text">Почта</label>
+                                    <input title="email" name ='email' type="email" class="input-text">
+                                </p>
+                                <p class="form-row form-row-wide">
+                                    <label class="text">Имя пользователя</label>
+                                    <input title="username" name = 'username' type="text" class="input-text">
+                                </p>
+                                <p class="form-row form-row-wide">
+                                    <label class="text">Пароль</label>
+                                    <input title="password" name = 'password' type="password" class="input-text">
+                                </p>
+                                <script>
+                                    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+                                        var password = document.getElementById('password').value;
+                                        var error = document.getElementById('passwordError');
+
+                                        if (password.length < 8) {
+                                            error.style.display = 'inline';
+                                            event.preventDefault(); // предотвратить отправку формы
+                                        } else {
+                                            error.style.display = 'none';
+                                        }
+                                        });
+                                </script>
+                                <p class="form-row">
+                                        <a href="{% url 'user_login' %}" class="label-text">Уже есть аккаунт
+                                </p>
+                                <p class="">
+                                    <input type="submit" name = 'register_button' class="button-submit" value="Зарегистрироваться">
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'include/footer.html' %}
+    <div class="footer-device-mobile">
+        <div class="wapper">
+            <div class="footer-device-mobile-item device-home">
+                <a href="index.html">
+                    <span class="icon">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                    </span>
+                    Home
+                </a>
+            </div>
+            <div class="footer-device-mobile-item device-home device-wishlist">
+                <a href="#">
+                    <span class="icon">
+                        <i class="fa fa-heart" aria-hidden="true"></i>
+                    </span>
+                    Wishlist
+                </a>
+            </div>
+            <div class="footer-device-mobile-item device-home device-cart">
+                <a href="#">
+                    <span class="icon">
+                        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                        <span class="count-icon">
+                            0
+                        </span>
+                    </span>
+                    <span class="text">Cart</span>
+                </a>
+            </div>
+            <div class="footer-device-mobile-item device-home device-user">
+                <a href="#">
+                    <span class="icon">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </span>
+                    Account
+                </a>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="backtotop">
+        <i class="fa fa-angle-double-up"></i>
+    </a>
+{% endblock %}
+
