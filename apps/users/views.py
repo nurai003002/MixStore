@@ -52,7 +52,7 @@ def register(request):
 
             errors = {}
 
-            if not username :
+            if not username or not email or not password:
                 errors['fields'] = 'All fields must be filled.'
 
             if password != confirm_password:
@@ -61,8 +61,12 @@ def register(request):
             if User.objects.filter(username=username,).exists():
                errors['username'] = 'Имя пользователя уже занято, выберите другое'
 
+            if User.objects.filter(email=email).exists():
+                errors['email'] = 'Email уже занят, введите другой'
+
             if errors:
                return render(request, 'user/register.html', locals())  
+            
             user = User(username=username,email=email, password=make_password(password))
             user.password = make_password(password)
             user.save()
