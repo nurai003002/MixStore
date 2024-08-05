@@ -22,6 +22,11 @@ class Setting(models.Model):
         verbose_name="Логотип",
         blank=True, null=True
     )
+    mobile_logo = models.ImageField(
+        upload_to='logo/',
+        verbose_name="Логотип для телефона",
+        blank=True, null=True
+    )
     email = models.EmailField(
         verbose_name="Почта",
         blank=True, null=True
@@ -39,10 +44,6 @@ class Setting(models.Model):
     address = models.CharField(
         max_length=300, 
         verbose_name="Адрес",
-        blank=True, null=True
-    )
-    facebook = models.URLField(
-        verbose_name="Facebook",
         blank=True, null=True
     )
     instagram = models.URLField(

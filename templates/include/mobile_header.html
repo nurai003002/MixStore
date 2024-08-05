@@ -4,10 +4,15 @@
         <div class="item mobile-logo">
             <div class="logo">
                 <a href="{% url 'index' %}">
-                    <img src="{{setting.logo.url}}" alt="img">
+                    <img src="{{setting.mobile_logo.url}}" alt="img">
                 </a>
             </div>
         </div>
+        <style>
+            .logo {
+                margin-bottom: -20px; /* измените значение на необходимое */
+            }
+        </style>
         <div class="item item mobile-search-box has-sub">
             <a href="#">
                     <span class="icon">

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.secondary.models import Slider, Service, Team, Review
+from apps.secondary.models import Slider, Service, Team, Review, Subscribe
 # Register your models here.
 
 @admin.register(Slider)
@@ -21,3 +21,8 @@ class TeamAdmin(admin.ModelAdmin):
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'position')
     list_filter = ('id', 'name')
+
+@admin.register(Subscribe)
+class SubscribeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'email')
+    list_filter = ('id',)

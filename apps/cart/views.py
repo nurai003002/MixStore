@@ -1,8 +1,11 @@
 from django.shortcuts import render,redirect,get_object_or_404
+from django.core.mail import send_mail, BadHeaderError
+from django.http import JsonResponse
 
 from apps.settings.models import Setting
 from apps.products.models import Product, Category
 from apps.cart.models import Cart, CartItem
+from apps.secondary.models import Subscribe
 
 # Create your views here.
 
@@ -17,6 +20,27 @@ def cart(request):
         item_price = item.price if item.price is not None else 0
         item_quantity = item.quantity if item.quantity is not None else 1
         item.total = item_price * item_quantity
+
+    if request.method == "POST":
+        if 'email_send' in request.POST:
+            email = request.POST.get('email')
+            try:
+                # Сохранение email в базе данных
+                Subscribe.objects.create(email=email)
+                
+                # Отправка письма
+                send_mail(
+                    'Подписка на рассылку',  # Subject
+                    f'Ваша почта: {email}\nСпасибо за подписку!',  # Message
+                    'noreply@somehost.local',  # From email
+                    [email],  # To email
+                    fail_silently=False,
+                )
+                return redirect('cart')
+            except BadHeaderError:
+                return JsonResponse({'error': 'Invalid header found.'}, status=500)
+            except ConnectionRefusedError as e:
+                return JsonResponse({'error': f'Connection refused: {e}'}, status=500)
     
 
     return render(request, 'cart/cart.html', locals())

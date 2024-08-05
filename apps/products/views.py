@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404
+from django.core.mail import send_mail, BadHeaderError
+from django.http import JsonResponse
 
 from apps.settings.models import Setting
 from apps.products.models import Product, Category, ProductReview
 from apps.cart.models import Cart
 from apps.users.models import User
+from apps.secondary.models import Subscribe
 
 def product(request):
     setting = Setting.objects.latest('id')
@@ -30,6 +33,26 @@ def product(request):
 
     new_products_indices = [product.id for product in Product.objects.all().order_by('-id')[:3]]
 
+    if request.method == "POST":
+        if 'email_send' in request.POST:
+            email = request.POST.get('email')
+            try:
+                # Сохранение email в базе данных
+                Subscribe.objects.create(email=email)
+                
+                # Отправка письма
+                send_mail(
+                    'Подписка на рассылку',  # Subject
+                    f'Ваша почта: {email}\nСпасибо за подписку!',  # Message
+                    'noreply@somehost.local',  # From email
+                    [email],  # To email
+                    fail_silently=False,
+                )
+                return redirect('product_index')
+            except BadHeaderError:
+                return JsonResponse({'error': 'Invalid header found.'}, status=500)
+            except ConnectionRefusedError as e:
+                return JsonResponse({'error': f'Connection refused: {e}'}, status=500)
     return render(request, 'product/products.html', locals())
 
 def product_detail(request, id):
@@ -58,6 +81,25 @@ def product_detail(request, id):
                 new_comment.save()
                 return redirect('product_detail', id=id)
             
+        if 'email_send' in request.POST:
+            email = request.POST.get('email')
+            try:
+                # Сохранение email в базе данных
+                Subscribe.objects.create(email=email)
+                
+                # Отправка письма
+                send_mail(
+                    'Подписка на рассылку',  # Subject
+                    f'Ваша почта: {email}\nСпасибо за подписку!',  # Message
+                    'noreply@somehost.local',  # From email
+                    [email],  # To email
+                    fail_silently=False,
+                )
+                return redirect('product_detail', id=id)
+            except BadHeaderError:
+                return JsonResponse({'error': 'Invalid header found.'}, status=500)
+            except ConnectionRefusedError as e:
+                return JsonResponse({'error': f'Connection refused: {e}'}, status=500)
     return render(request, 'product/details.html', locals())
 
 
