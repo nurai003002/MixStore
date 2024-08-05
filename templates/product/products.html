@@ -2,84 +2,7 @@
 {% load static %}
 {% block content %}
 {% include 'include/header.html' %}
-	<div class="header-device-mobile">
-		<div class="wapper">
-			<div class="item mobile-logo">
-				<div class="logo">
-					<a href="#">
-						<img src="{% static 'assets/images/logo.png' %}" alt="img">
-					</a>
-				</div>
-			</div>
-			<div class="item item mobile-search-box has-sub">
-				<a href="#">
-						<span class="icon">
-							<i class="fa fa-search" aria-hidden="true"></i>
-						</span>
-				</a>
-				<div class="block-sub">
-					<a href="#" class="close">
-						<i class="fa fa-times" aria-hidden="true"></i>
-					</a>
-					<div class="header-searchform-box">
-						<form class="header-searchform">
-							<div class="searchform-wrap">
-								<input type="text" class="search-input" placeholder="Enter keywords to search...">
-								<input type="submit" class="submit button" value="Search">
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="item mobile-settings-box has-sub">
-				<a href="#">
-						<span class="icon">
-							<i class="fa fa-cog" aria-hidden="true"></i>
-						</span>
-				</a>
-				<div class="block-sub">
-					<a href="#" class="close">
-						<i class="fa fa-times" aria-hidden="true"></i>
-					</a>
-					<div class="block-sub-item">
-						<h5 class="block-item-title">Currency</h5>
-						<form class="currency-form ysera-language">
-							<ul class="ysera-language-wrap">
-								<li class="active">
-									<a href="#">
-											<span>
-												English (USD)
-											</span>
-									</a>
-								</li>
-								<li>
-									<a href="#">
-											<span>
-												French (EUR)
-											</span>
-									</a>
-								</li>
-								<li>
-									<a href="#">
-											<span>
-												Japanese (JPY)
-											</span>
-									</a>
-								</li>
-							</ul>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="item menu-bar">
-				<a class=" mobile-navigation  menu-toggle" href="#">
-					<span></span>
-					<span></span>
-					<span></span>
-				</a>
-			</div>
-		</div>
-	</div>
+	{% include 'include/mobile_header.html' %}
 	<div class="main-content main-content-product no-sidebar">
 		<div class="container">
 			<div class="row">
@@ -87,10 +10,10 @@
 					<div class="breadcrumb-trail breadcrumbs">
 						<ul class="trail-items breadcrumb">
 							<li class="trail-item trail-begin">
-								<a href="index.html">Home</a>
+								<a href="{% url 'index' %}">Главная</a>
 							</li>
 							<li class="trail-item trail-end active">
-								Grid Products
+								Товары
 							</li>
 						</ul>
 					</div>
@@ -100,48 +23,14 @@
 				<div class="content-area shop-grid-content full-width col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="site-main">
 						<h3 class="custom_blog_title">
-							Grid Products
+							Товары
 						</h3>
-						<div class="shop-top-control">
-							<form class="select-item select-form">
-								<span class="title">Sort</span>
-								<select title="sort" data-placeholder="9 Products/Page" class="chosen-select">
-									<option value="2">9 Products/Page</option>
-									<option value="1">12 Products/Page</option>
-									<option value="3">10 Products/Page</option>
-									<option value="4">8 Products/Page</option>
-									<option value="5">6 Products/Page</option>
-								</select>
-							</form>
-							<form class="filter-choice select-form">
-								<span class="title">Sort by</span>
-								<select title="sort-by" data-placeholder="Price: Low to High" class="chosen-select">
-									<option value="1">Price: Low to High</option>
-									<option value="2">Sort by popularity</option>
-									<option value="3">Sort by average rating</option>
-									<option value="4">Sort by newness</option>
-									<option value="5">Sort by price: low to high</option>
-								</select>
-							</form>
-							<div class="grid-view-mode">
-								<div class="inner">
-									<a href="listproducts.html" class="modes-mode mode-list">
-										<span></span>
-										<span></span>
-									</a>
-									<a href="gridproducts.html" class="modes-mode mode-grid  active">
-										<span></span>
-										<span></span>
-										<span></span>
-										<span></span>
-									</a>
-								</div>
-							</div>
-						</div>
 						<ul class="row list-products auto-clear equal-container product-grid">
-							<li class="product-item  col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
+							{% for product in products %}
+							<li class="product-item product-type-variable col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
 								<div class="product-inner equal-element">
 									<div class="product-top">
+										{% if product.id in new_products_indices %}
 										<div class="flash">
 											<span class="onnew">
 												<span class="text">
@@ -149,624 +38,61 @@
 												</span>
 											</span>
 										</div>
+										{% endif %}
 									</div>
 									<div class="product-thumb">
 										<div class="thumb-inner">
-											<a href="#">
-												<img src="{% static 'assets/images/product-item-1.jpg' %}" alt="img">
+											<a href="{% url 'product_detail' product.id %}">
+												<img src="{{ product.image.url }}" alt="img">
 											</a>
 											<div class="thumb-group">
-												<div class="yith-wcwl-add-to-wishlist">
-													<div class="yith-wcwl-add-button">
-														<a href="#">Add to Wishlist</a>
-													</div>
-												</div>
-												<a href="#" class="button quick-wiew-button">Quick View</a>
 												<div class="loop-form-add-to-cart">
-													<button class="single_add_to_cart_button button">Add to cart
-													</button>
+													<a href="{% url 'add_to_cart' product.id %}" class="single_add_to_cart_button button">В корзину
+													</a>
 												</div>
 											</div>
 										</div>
 									</div>
 									<div class="product-info">
 										<h5 class="product-name product_title">
-											<a href="#">Aluminum Plant</a>
+											<a href="{% url 'product_detail' product.id %}">{{ product.title }}</a>
 										</h5>
 										<div class="group-info">
-											<div class="stars-rating">
-												<div class="star-rating">
-													<span class="star-3"></span>
-												</div>
-												<div class="count-star">
-													(3)
-												</div>
-											</div>
 											<div class="price">
-												<del>
-													$65
-												</del>
-												<ins>
-													$45
-												</ins>
+												{% if product.old_price %}
+												<del>{{ product.old_price }} сом</del>
+												{% endif %}
+												{% if product.price %}
+												<ins>{{ product.price }} сом</ins>
+												{% endif %}
 											</div>
 										</div>
 									</div>
 								</div>
 							</li>
-							<li class="product-item product-type-variable col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-								<div class="product-inner equal-element">
-									<div class="product-top">
-									</div>
-									<div class="product-thumb">
-										<div class="thumb-inner">
-											<a href="#">
-												<img src="{% static 'assets/images/product-item-2.jpg' %}" alt="img">
-											</a>
-											<div class="thumb-group">
-												<div class="yith-wcwl-add-to-wishlist">
-													<div class="yith-wcwl-add-button">
-														<a href="#">Add to Wishlist</a>
-													</div>
-												</div>
-												<a href="#" class="button quick-wiew-button">Quick View</a>
-												<div class="loop-form-add-to-cart">
-													<button class="single_add_to_cart_button button">Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="product-info">
-										<h5 class="product-name product_title">
-											<a href="#">Splendid Diamond</a>
-										</h5>
-										<div class="group-info">
-											<div class="stars-rating">
-												<div class="star-rating">
-													<span class="star-3"></span>
-												</div>
-												<div class="count-star">
-													(3)
-												</div>
-											</div>
-											<div class="price">
-												<del>
-													$65
-												</del>
-												<ins>
-													$45
-												</ins>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="product-item product-type-variable col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-								<div class="product-inner equal-element">
-									<div class="product-top">
-										<div class="flash">
-											<span class="onnew">
-												<span class="text">
-													new
-												</span>
-											</span>
-										</div>
-									</div>
-									<div class="product-thumb">
-										<div class="thumb-inner">
-											<a href="#">
-												<img src="{% static 'assets/images/product-item-3.jpg' %}" alt="img">
-											</a>
-											<div class="thumb-group">
-												<div class="yith-wcwl-add-to-wishlist">
-													<div class="yith-wcwl-add-button">
-														<a href="#">Add to Wishlist</a>
-													</div>
-												</div>
-												<a href="#" class="button quick-wiew-button">Quick View</a>
-												<div class="loop-form-add-to-cart">
-													<button class="single_add_to_cart_button button">Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="product-info">
-										<h5 class="product-name product_title">
-											<a href="#">Dazzling Earrings</a>
-										</h5>
-										<div class="group-info">
-											<div class="stars-rating">
-												<div class="star-rating">
-													<span class="star-3"></span>
-												</div>
-												<div class="count-star">
-													(3)
-												</div>
-											</div>
-											<div class="price">
-												<del>
-													$65
-												</del>
-												<ins>
-													$45
-												</ins>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="product-item product-type-variable col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-								<div class="product-inner equal-element">
-									<div class="product-top">
-									</div>
-									<div class="product-thumb">
-										<div class="thumb-inner">
-											<a href="#">
-												<img src="{% static 'assets/images/product-item-4.jpg' %}" alt="img">
-											</a>
-											<div class="thumb-group">
-												<div class="yith-wcwl-add-to-wishlist">
-													<div class="yith-wcwl-add-button">
-														<a href="#">Add to Wishlist</a>
-													</div>
-												</div>
-												<a href="#" class="button quick-wiew-button">Quick View</a>
-												<div class="loop-form-add-to-cart">
-													<button class="single_add_to_cart_button button">Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="product-info">
-										<h5 class="product-name product_title">
-											<a href="#">Elegant Neckwear</a>
-										</h5>
-										<div class="group-info">
-											<div class="stars-rating">
-												<div class="star-rating">
-													<span class="star-3"></span>
-												</div>
-												<div class="count-star">
-													(3)
-												</div>
-											</div>
-											<div class="price">
-												<del>
-													$65
-												</del>
-												<ins>
-													$45
-												</ins>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="product-item  col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-								<div class="product-inner equal-element">
-									<div class="product-top">
-									</div>
-									<div class="product-thumb">
-										<div class="thumb-inner">
-											<a href="#">
-												<img src="{% static 'assets/images/product-item-5.jpg' %}" alt="img">
-											</a>
-											<div class="thumb-group">
-												<div class="yith-wcwl-add-to-wishlist">
-													<div class="yith-wcwl-add-button">
-														<a href="#">Add to Wishlist</a>
-													</div>
-												</div>
-												<a href="#" class="button quick-wiew-button">Quick View</a>
-												<div class="loop-form-add-to-cart">
-													<button class="single_add_to_cart_button button">Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="product-info">
-										<h5 class="product-name product_title">
-											<a href="#">Boston Fern</a>
-										</h5>
-										<div class="group-info">
-											<div class="stars-rating">
-												<div class="star-rating">
-													<span class="star-3"></span>
-												</div>
-												<div class="count-star">
-													(3)
-												</div>
-											</div>
-											<div class="price">
-												<del>
-													$65
-												</del>
-												<ins>
-													$45
-												</ins>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="product-item product-type-variable col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-								<div class="product-inner equal-element">
-									<div class="product-top">
-										<div class="flash">
-											<span class="onnew">
-												<span class="text">
-													new
-												</span>
-											</span>
-										</div>
-									</div>
-									<div class="product-thumb">
-										<div class="thumb-inner">
-											<a href="#">
-												<img src="{% static 'assets/images/product-item-6.jpg' %}" alt="img">
-											</a>
-											<div class="thumb-group">
-												<div class="yith-wcwl-add-to-wishlist">
-													<div class="yith-wcwl-add-button">
-														<a href="#">Add to Wishlist</a>
-													</div>
-												</div>
-												<a href="#" class="button quick-wiew-button">Quick View</a>
-												<div class="loop-form-add-to-cart">
-													<button class="single_add_to_cart_button button">Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="product-info">
-										<h5 class="product-name product_title">
-											<a href="#">Rose Gold</a>
-										</h5>
-										<div class="group-info">
-											<div class="stars-rating">
-												<div class="star-rating">
-													<span class="star-3"></span>
-												</div>
-												<div class="count-star">
-													(3)
-												</div>
-											</div>
-											<div class="price">
-												<del>
-													$65
-												</del>
-												<ins>
-													$45
-												</ins>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="product-item product-type-variable col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-								<div class="product-inner equal-element">
-									<div class="product-top">
-									</div>
-									<div class="product-thumb">
-										<div class="thumb-inner">
-											<a href="#">
-												<img src="{% static 'assets/images/product-item-7.jpg' %}" alt="img">
-											</a>
-											<div class="thumb-group">
-												<div class="yith-wcwl-add-to-wishlist">
-													<div class="yith-wcwl-add-button">
-														<a href="#">Add to Wishlist</a>
-													</div>
-												</div>
-												<a href="#" class="button quick-wiew-button">Quick View</a>
-												<div class="loop-form-add-to-cart">
-													<button class="single_add_to_cart_button button">Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="product-info">
-										<h5 class="product-name product_title">
-											<a href="#">Modern Neckwear </a>
-										</h5>
-										<div class="group-info">
-											<div class="stars-rating">
-												<div class="star-rating">
-													<span class="star-3"></span>
-												</div>
-												<div class="count-star">
-													(3)
-												</div>
-											</div>
-											<div class="price">
-												<del>
-													$65
-												</del>
-												<ins>
-													$45
-												</ins>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="product-item  col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-								<div class="product-inner equal-element">
-									<div class="product-top">
-									</div>
-									<div class="product-thumb">
-										<div class="thumb-inner">
-											<a href="#">
-												<img src="{% static 'assets/images/product-item-20.jpg' %}" alt="img">
-											</a>
-											<div class="thumb-group">
-												<div class="yith-wcwl-add-to-wishlist">
-													<div class="yith-wcwl-add-button">
-														<a href="#">Add to Wishlist</a>
-													</div>
-												</div>
-												<a href="#" class="button quick-wiew-button">Quick View</a>
-												<div class="loop-form-add-to-cart">
-													<button class="single_add_to_cart_button button">Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="product-info">
-										<h5 class="product-name product_title">
-											<a href="#">Magnificent Bangle</a>
-										</h5>
-										<div class="group-info">
-											<div class="stars-rating">
-												<div class="star-rating">
-													<span class="star-3"></span>
-												</div>
-												<div class="count-star">
-													(3)
-												</div>
-											</div>
-											<div class="price">
-												<del>
-													$65
-												</del>
-												<ins>
-													$45
-												</ins>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="product-item product-type-variable col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-								<div class="product-inner equal-element">
-									<div class="product-top">
-										<div class="flash">
-											<span class="onnew">
-												<span class="text">
-													new
-												</span>
-											</span>
-										</div>
-									</div>
-									<div class="product-thumb">
-										<div class="thumb-inner">
-											<a href="#">
-												<img src="{% static 'assets/images/product-item-9.jpg' %}" alt="img">
-											</a>
-											<div class="thumb-group">
-												<div class="yith-wcwl-add-to-wishlist">
-													<div class="yith-wcwl-add-button">
-														<a href="#">Add to Wishlist</a>
-													</div>
-												</div>
-												<a href="#" class="button quick-wiew-button">Quick View</a>
-												<div class="loop-form-add-to-cart">
-													<button class="single_add_to_cart_button button">Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="product-info">
-										<h5 class="product-name product_title">
-											<a href="#">Modern Platinum</a>
-										</h5>
-										<div class="group-info">
-											<div class="stars-rating">
-												<div class="star-rating">
-													<span class="star-3"></span>
-												</div>
-												<div class="count-star">
-													(3)
-												</div>
-											</div>
-											<div class="price">
-												<del>
-													$65
-												</del>
-												<ins>
-													$45
-												</ins>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="product-item  col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-								<div class="product-inner equal-element">
-									<div class="product-top">
-									</div>
-									<div class="product-thumb">
-										<div class="thumb-inner">
-											<a href="#">
-												<img src="{% static 'assets/images/product-item-8.jpg' %}" alt="img">
-											</a>
-											<div class="thumb-group">
-												<div class="yith-wcwl-add-to-wishlist">
-													<div class="yith-wcwl-add-button">
-														<a href="#">Add to Wishlist</a>
-													</div>
-												</div>
-												<a href="#" class="button quick-wiew-button">Quick View</a>
-												<div class="loop-form-add-to-cart">
-													<button class="single_add_to_cart_button button">Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="product-info">
-										<h5 class="product-name product_title">
-											<a href="#">Dainty Bangle</a>
-										</h5>
-										<div class="group-info">
-											<div class="stars-rating">
-												<div class="star-rating">
-													<span class="star-3"></span>
-												</div>
-												<div class="count-star">
-													(3)
-												</div>
-											</div>
-											<div class="price">
-												<del>
-													$65
-												</del>
-												<ins>
-													$45
-												</ins>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="product-item  col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-								<div class="product-inner equal-element">
-									<div class="product-top">
-										<div class="flash">
-											<span class="onnew">
-												<span class="text">
-													new
-												</span>
-											</span>
-										</div>
-									</div>
-									<div class="product-thumb">
-										<div class="thumb-inner">
-											<a href="#">
-												<img src="{% static 'assets/images/product-item-21.jpg' %}" alt="img">
-											</a>
-											<div class="thumb-group">
-												<div class="yith-wcwl-add-to-wishlist">
-													<div class="yith-wcwl-add-button">
-														<a href="#">Add to Wishlist</a>
-													</div>
-												</div>
-												<a href="#" class="button quick-wiew-button">Quick View</a>
-												<div class="loop-form-add-to-cart">
-													<button class="single_add_to_cart_button button">Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="product-info">
-										<h5 class="product-name product_title">
-											<a href="#">Riona Pearl</a>
-										</h5>
-										<div class="group-info">
-											<div class="stars-rating">
-												<div class="star-rating">
-													<span class="star-3"></span>
-												</div>
-												<div class="count-star">
-													(3)
-												</div>
-											</div>
-											<div class="price">
-												<del>
-													$65
-												</del>
-												<ins>
-													$45
-												</ins>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="product-item  col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-								<div class="product-inner equal-element">
-									<div class="product-top">
-										<div class="flash">
-											<span class="onnew">
-												<span class="text">
-													new
-												</span>
-											</span>
-										</div>
-									</div>
-									<div class="product-thumb">
-										<div class="thumb-inner">
-											<a href="#">
-												<img src="{% static 'assets/images/product-item-22.jpg' %}" alt="img">
-											</a>
-											<div class="thumb-group">
-												<div class="yith-wcwl-add-to-wishlist">
-													<div class="yith-wcwl-add-button">
-														<a href="#">Add to Wishlist</a>
-													</div>
-												</div>
-												<a href="#" class="button quick-wiew-button">Quick View</a>
-												<div class="loop-form-add-to-cart">
-													<button class="single_add_to_cart_button button">Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="product-info">
-										<h5 class="product-name product_title">
-											<a href="#">Slender Earrings </a>
-										</h5>
-										<div class="group-info">
-											<div class="stars-rating">
-												<div class="star-rating">
-													<span class="star-3"></span>
-												</div>
-												<div class="count-star">
-													(3)
-												</div>
-											</div>
-											<div class="price">
-												<del>
-													$65
-												</del>
-												<ins>
-													$45
-												</ins>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
+							{% endfor %}
 						</ul>
+						
 						<div class="pagination clearfix style2">
 							<div class="nav-link">
-								<a href="#" class="page-numbers"><i class="icon fa fa-angle-left" aria-hidden="true"></i></a>
-								<a href="#" class="page-numbers">1</a>
-								<a href="#" class="page-numbers">2</a>
-								<a href="#" class="page-numbers current">3</a>
-								<a href="#" class="page-numbers"><i class="icon fa fa-angle-right" aria-hidden="true"></i></a>
+								{% if products.has_previous %}
+								<a href="?page={{ products.previous_page_number }}" class="page-numbers"><i class="icon fa fa-angle-left" aria-hidden="true"></i></a>
+								{% endif %}
+								
+								{% for num in products.paginator.page_range %}
+								{% if products.number == num %}
+								<span class="page-numbers current">{{ num }}</span>
+								{% else %}
+								<a href="?page={{ num }}" class="page-numbers">{{ num }}</a>
+								{% endif %}
+								{% endfor %}
+								
+								{% if products.has_next %}
+								<a href="?page={{ products.next_page_number }}" class="page-numbers"><i class="icon fa fa-angle-right" aria-hidden="true"></i></a>
+								{% endif %}
 							</div>
 						</div>
+						
 					</div>
 				</div>
 				<div class="sidebar col-lg-3 col-md-3 col-sm-12 col-xs-12">
@@ -943,47 +269,6 @@
 		</div>
 	</div>
 	{% include 'include/footer.html' %}
-	<div class="footer-device-mobile">
-		<div class="wapper">
-			<div class="footer-device-mobile-item device-home">
-				<a href="index.html">
-					<span class="icon">
-						<i class="fa fa-home" aria-hidden="true"></i>
-					</span>
-					Home
-				</a>
-			</div>
-			<div class="footer-device-mobile-item device-home device-wishlist">
-				<a href="#">
-					<span class="icon">
-						<i class="fa fa-heart" aria-hidden="true"></i>
-					</span>
-					Wishlist
-				</a>
-			</div>
-			<div class="footer-device-mobile-item device-home device-cart">
-				<a href="#">
-					<span class="icon">
-						<i class="fa fa-shopping-basket" aria-hidden="true"></i>
-						<span class="count-icon">
-							0
-						</span>
-					</span>
-					<span class="text">Cart</span>
-				</a>
-			</div>
-			<div class="footer-device-mobile-item device-home device-user">
-				<a href="#">
-					<span class="icon">
-						<i class="fa fa-user" aria-hidden="true"></i>
-					</span>
-					Account
-				</a>
-			</div>
-		</div>
-	</div>
-	<a href="#" class="backtotop">
-		<i class="fa fa-angle-double-up"></i>
-	</a>
+	{% include 'include/mobile_footer.html' %}
 
 {% endblock %}
