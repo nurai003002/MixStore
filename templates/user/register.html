@@ -110,53 +110,109 @@
             <div class="row justify-content-center">
                 <div class="content-area col-lg-6 col-md-8 col-sm-12 col-xs-12">
                     <div class="site-main">
-                        <h3 class="custom_blog_title">
-                            Регистрация
-                        </h3>
+                        <h3 class="custom_blog_title">Регистрация</h3>
                         <div class="login-item">
                             <h5 class="title-login">Зарегистрироваться</h5>
-                            <form class="register" method="POST" action="">
+                            <form id="registrationForm" class="register" method="POST" action="">
                                 {% csrf_token %}
                                 <p class="form-row form-row-wide">
                                     <label class="text">Почта</label>
-                                    <input title="email" name ='email' type="email" class="input-text">
+                                    <input title="email" name="email" type="email" class="input-text">
                                 </p>
                                 <p class="form-row form-row-wide">
                                     <label class="text">Имя пользователя</label>
-                                    <input title="username" name = 'username' type="text" class="input-text">
+                                    <input title="username" name="username" type="text" class="input-text">
                                 </p>
                                 <p class="form-row form-row-wide">
                                     <label class="text">Пароль</label>
-                                    <input title="password" name = 'password' type="password" class="input-text">
+                                    <div class="password-container">
+                                        <input id="password" title="password" name="password" type="password" class="input-text">
+                                        <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
                                 </p>
                                 <p class="form-row form-row-wide">
                                     <label class="text">Повторите пароль</label>
-                                    <input title="confirm_password" name = 'confirm_password' type="password" class="input-text">
+                                    <div class="password-container">
+                                        <input id="confirm_password" title="confirm_password" name="confirm_password" type="password" class="input-text">
+                                        <button type="button" class="toggle-password" onclick="togglePassword('confirm_password')">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
                                 </p>
+                                <div id="passwordError" style="display: none; color: red;">Пароль должен содержать не менее 8 символов и совпадать.</div>
                                 <script>
+                                    function togglePassword(fieldId) {
+                                        var field = document.getElementById(fieldId);
+                                        var icon = field.nextElementSibling.querySelector('i');
+                                        if (field.type === "password") {
+                                            field.type = "text";
+                                            icon.classList.remove('fa-eye');
+                                            icon.classList.add('fa-eye-slash');
+                                        } else {
+                                            field.type = "password";
+                                            icon.classList.remove('fa-eye-slash');
+                                            icon.classList.add('fa-eye');
+                                        }
+                                    }
+            
                                     document.getElementById('registrationForm').addEventListener('submit', function(event) {
                                         var password = document.getElementById('password').value;
+                                        var confirmPassword = document.getElementById('confirm_password').value;
                                         var error = document.getElementById('passwordError');
-
-                                        if (password.length < 8) {
+            
+                                        if (password.length < 8 || password !== confirmPassword) {
                                             error.style.display = 'inline';
                                             event.preventDefault(); // предотвратить отправку формы
                                         } else {
                                             error.style.display = 'none';
                                         }
-                                        });
+                                    });
                                 </script>
                                 <p class="form-row">
-                                        <a href="{% url 'user_login' %}" class="label-text">Уже есть аккаунт
+                                    <a href="{% url 'user_login' %}" class="label-text">Уже есть аккаунт</a>
                                 </p>
-                                <p class="">
-                                    <input type="submit" name = 'register_button' class="button-submit" value="Зарегистрироваться">
+                                <p>
+                                    <input type="submit" name="register_button" class="button-submit" value="Зарегистрироваться">
                                 </p>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <style>
+                .password-container {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                }
+                .input-text {
+                    flex: 1;
+                    padding-right: 2.5em; /* Увеличиваем пространство для кнопки */
+                }
+                .toggle-password {
+                    position: absolute;
+                    right: 0.5em;
+                    border: none;
+                    background: none;
+                    cursor: pointer;
+                    color: #c09578; /* Используйте основной цвет сайта */
+                    font-size: 1.2em;
+                    padding: 0;
+                }
+                .toggle-password:hover {
+                    color: #c09578; /* Цвет при наведении */
+                }
+            </style>
+            
+            <!-- Подключение Font Awesome, если оно ещё не подключено -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+            
+            
+            
+            
         </div>
     </div>
     {% include 'include/footer.html' %}
