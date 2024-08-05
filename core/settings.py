@@ -141,6 +141,12 @@ STATICFILES_DIRS = [BASE_DIR/'static/']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+EMAIL_USE_TLS = True  # Использовать TLS для защищенного соединения
+EMAIL_HOST = 'smtp.gmail.com'  # Адрес SMTP сервера Gmail
+EMAIL_PORT = 587  # Порт для подключения к SMTP серверу Gmail
+EMAIL_HOST_USER = 'bullabratan@gmail.com'
+EMAIL_HOST_PASSWORD = 'spoc twnz dgex hjxr'
+ 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

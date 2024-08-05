@@ -34,66 +34,158 @@
                 {% endfor %}
             </div>
         </div>
-            <div class="ysera-product produc-featured rows-space-40">
+        <div class="banner-wrapp rows-space-35">
             <div class="container">
-                <h3 class="custommenu-title-blog">
-                    Новые поступления
-                </h3>
-                <ul class="row list-products auto-clear equal-container product-grid">
-                    {% for product in product_new %}
-                    <li class="product-item  col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-                        <div class="product-inner equal-element">
-                            <div class="product-top">
-                                <div class="flash">
-													<span class="onnew">
-														<span class="text">
-															new
-														</span>
-													</span>
-                                </div>
-                            </div>
-                            <div class="product-thumb">
-                                <div class="thumb-inner">
-                                    <a href="{% url 'product_detail' product.id %}">
-                                        <img src="{{product.image.url}}" alt="img">
-                                    </a>
-                                    <div class="thumb-group">
-                                        <div class="loop-form-add-to-cart">
-                                            <a href="{% url 'add_to_cart' product.id %}" class="single_add_to_cart_button button">В корзину
-                                            </a>
+                <div class="row">
+                    {% for category in category %}
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <div class="banner">
+                            <div class="item-banner style12" >
+                                <div class="inner"  style="background-image: url('{{category.image.url}}');">
+                                    <div class="banner-content">
+                                        <h3 class="title">{{category.title}}</h3>
+                                        <div class="description">
+                                            {{category.description}}
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <h5 class="product-name product_title">
-                                    <a href="{% url 'product_detail' product.id %}">{{product.title}}</a>
-                                </h5>
-                                <div class="group-info">
-                                    <div class="price">
-                                        {% if product.old_price %}
-                                        <del>
-                                            {{product.old_price}} сом
-                                        </del>
-                                        {% endif %}
-                                        {% if product.price %}
-                                        <ins>
-                                            {{product.price}} сом
-                                        </ins>
-                                        {% endif %}
+                                        <a href="{{category.link}}" class="button btn-shop-now">Подробнее</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </li>
+                    </div>
                     {% endfor %}
-                </ul>
+                </div>
+            </div>
+        </div>
+        <div class="ysera-tabs default rows-space-40">
+            <div class="container">
+                <h3 class="custommenu-title-blog">
+                    Новые поступления
+                </h3>
+                <div class="tab-head">
+                    <ul class="tab-link">
+                        <li class="active">
+                            <a data-toggle="tab" href="#all">все</a>
+                        </li>
+                        {% for category in categories %}
+                        <li>
+                            <a data-toggle="tab" href="#{{ category.id }}">{{ category.title }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="tab-container">
+                    <div id="all" class="tab-panel active">
+                        <div class="ysera-product">
+                            <ul class="row list-products auto-clear equal-container product-grid">
+                                {% for product in products %}
+                                <li class="product-item col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
+                                    <div class="product-inner equal-element">
+                                        <div class="product-top">
+                                            {% if product.id in new_products_indices %}
+                                            <div class="flash">
+                                                <span class="onnew">
+                                                    <span class="text">new</span>
+                                                </span>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="product-thumb">
+                                            <div class="thumb-inner">
+                                                <a href="{% url 'product_detail' product.id %}">
+                                                    <img src="{{ product.image.url }}" alt="img">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <h5 class="product-name product_title">
+                                                <a href="{% url 'product_detail' product.id %}">{{ product.title }}</a>
+                                            </h5>
+                                            <div class="group-info">
+                                                <div class="price">
+                                                    {% if product.old_price %}
+                                                    <del>{{ product.old_price }} сом</del>
+                                                    {% endif %}
+                                                    {% if product.price %}
+                                                    <ins>{{ product.price }} сом</ins>
+                                                    {% endif %} 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% for category in categories %}
+                    <div id="{{ category.id }}" class="tab-panel">
+                        <div class="ysera-product">
+                            <ul class="row list-products auto-clear equal-container product-grid">
+                                {% for product in products %}
+                                {% if product.category == category %}
+                                <li class="product-item col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
+                                    <div class="product-inner equal-element">
+                                        <div class="product-top">
+                                            {% if product.id in new_products_indices %}
+                                            <div class="flash">
+                                                <span class="onnew">
+                                                    <span class="text">new</span>
+                                                </span>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="product-thumb">
+                                            <div class="thumb-inner">
+                                                <a href="{% url 'product_detail' product.id %}">
+                                                    <img src="{{ product.image.url }}" alt="img">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <h5 class="product-name product_title">
+                                                <a href="{% url 'product_detail' product.id %}">{{ product.title }}</a>
+                                            </h5>
+                                            <div class="group-info">
+                                                <div class="price">
+                                                    {% if product.old_price %}
+                                                    <del>{{ product.old_price }} сом</del>
+                                                    {% endif %}
+                                                    {% if product.price %}
+                                                    <ins>{{ product.price }} сом</ins>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
         <div class="ysera-testimonials-newsletter-wrapp">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-9">
+                    <div class="col-lg-7 col-md-7 col-sm-12">
+                        <div class="banner">
+                            <div class="item-banner style11">
+                                <div class="inner" style="background-image: url('{% static 'assets/images/Group 50.png' %}');">
+                                    <div class="banner-content">
+                                        <h4 class="ysera-subtitle">График работы</h4>
+                                        <div class="description">
+                                            {{setting.schedule}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-12">
                         <div class="ysera-testimonials-wrapp">
                             <div class="ysera-testimonials default">
                                 <div class="owl-slick equal-container"
@@ -124,12 +216,7 @@
                 </div>
             </div>
         </div>
-        <style>
-            .ysera-testimonials-newsletter-wrapp {
-                margin-left: 250px;
-            }
-
-        </style>
+        
     </div>
 </div>
 {% include 'include/footer.html' %}

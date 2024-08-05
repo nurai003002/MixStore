@@ -44,9 +44,11 @@
                             <h3 class="title">Новостная рассылка</h3>
                         </div>
                         <div class="newsletter-form-wrap">
-                            <input type="email" class="input-text email email-newsletter"
-                                   placeholder="Введите вашу почту">
-                            <button class="button btn-submit submit-newsletter">Подписаться</button>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="email" name="email" class="input-text email email-newsletter" placeholder="Введите вашу почту" required>
+                                <button type="submit" name="email_send" class="button btn-submit submit-newsletter">Подписаться</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -79,19 +81,20 @@
                         <div class="ysera-socials">
                             <ul class="socials">
                                 <li>
-                                    <a href="#" class="social-item" target="_blank">
-                                        <i class="icon fa fa-facebook"></i>
-                                    </a>
+                                    {% if setting.whatsapp %}
+                                        <a href="{{setting.whatsapp}}" class="social-item" target="_blank">
+                                            <span class="icon fa fa-whatsapp"></span>
+                                        </a>
+                                    {% endif %}
                                 </li>
                                 <li>
-                                    <a href="#" class="social-item" target="_blank">
-                                        <i class="icon fa fa-twitter"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="social-item" target="_blank">
-                                        <i class="icon fa fa-instagram"></i>
-                                    </a>
+                                    {% if setting.instagram %}
+                                        <a href="{{setting.instagram}}" class="social-item" target="_blank">
+												<span class="icon fa fa-instagram">
+													
+												</span>
+                                        </a>
+                                    {% endif %}
                                 </li>
                             </ul>
                         </div>

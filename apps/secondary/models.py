@@ -103,3 +103,18 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
+
+
+class Subscribe(models.Model):
+    email = models.CharField(
+        max_length = 255,
+        verbose_name = 'Почта для рассылки',
+        blank=True, null=True
+    )
+
+    def __str__(self):
+        return self.email
+    
+    class Meta:
+        verbose_name = 'Рассылка'
+        verbose_name_plural = 'Рассылка'

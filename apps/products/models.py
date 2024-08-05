@@ -5,12 +5,23 @@ from django_resized.forms import ResizedImageField
 # Create your models here.
 
 class Category(models.Model):
+    image = ResizedImageField(
+        force_format="WEBP", 
+        quality=100, default='no_image.jpg',
+        upload_to='category_images/',
+        verbose_name="фото категории",
+        blank = True, null = True
+    )
+    description = models.CharField(
+        max_length=500,
+        verbose_name='Описание'
+    )
     title = models.CharField(
         max_length=255, verbose_name="Название"
     )
-    slug = models.SlugField(
-        max_length=100, verbose_name="URL",
-        blank=True, unique=True
+    link = models.URLField(
+        verbose_name='Ссылка URL',
+        blank=True, null=True
     )
     
     def __str__(self):
