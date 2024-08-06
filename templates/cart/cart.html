@@ -55,8 +55,8 @@
                                         </td>
                                         <td class="product-name" data-title="Product">
                                             <a href="{% url 'product_detail' cart_item.id %}" class="title">{{cart_item.title}}</a>
-                                            <span class="attributes-select attributes-color">{{cart_item.color}}</span>
-                                            <span class="attributes-select attributes-size">{{cart_item.size}}</span>
+                                            <span class="attributes-select attributes-color">{{cart_item.product.color}}</span>
+                                            <span class="attributes-select attributes-size">{{cart_item.product.size}}</span>
                                         </td>
                                         <td class="product-quantity" data-title="Quantity">
                                             <div class="quantity">
@@ -79,17 +79,12 @@
                                     {% endfor %}
                                     <tr>
                                         <td class="actions">
-                                            <div class="coupon">
-                                                <label class="coupon_code">Coupon Code:</label>
-                                                <input type="text" class="input-text" placeholder="Promotion code here">
-                                                <a href="#" class="button"></a>
-                                            </div>
                                             <div class="order-total">
 														<span class="title">
-															Total Price:
+															Общая сумма:
 														</span>
                                                 <span class="total-price">
-															{{total_price}}
+															{{total_price}} сом
 														</span>
                                             </div>
                                         </td>
@@ -98,12 +93,12 @@
                                 </table>
                             </form>
                             <div class="control-cart">
-                                <button class="button btn-continue-shopping">
+                                <a href="{% url 'product_index' %}" class="button btn-continue-shopping">
                                     В магазин
-                                </button>
-                                <button class="button btn-cart-to-checkout">
+                                </a>
+                                <a href="{% url 'checkout' %}" class="button btn-cart-to-checkout">
                                     Заказать
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>

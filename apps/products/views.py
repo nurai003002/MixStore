@@ -6,7 +6,7 @@ from django.http import JsonResponse
 
 from apps.settings.models import Setting
 from apps.products.models import Product, Category, ProductReview
-from apps.cart.models import Cart
+from apps.cart.models import CartItem
 from apps.users.models import User
 from apps.secondary.models import Subscribe
 
@@ -15,7 +15,7 @@ def product(request):
     products = Product.objects.all().order_by('-id') 
     
     categories = Category.objects.all()
-    cart_items = Cart.objects.all()
+    cart_items = CartItem.objects.all()
     cart_items_count = cart_items.count()
     paginator = Paginator(products, 12)  
 
@@ -60,7 +60,7 @@ def product_detail(request, id):
     products = Product.objects.all()
     random_products = Product.objects.all().order_by('?')[:5]
     categories = Category.objects.all()
-    cart_items = Cart.objects.all()  
+    cart_items = CartItem.objects.all()  
     cart_items_count = cart_items.count()
     product_detail = get_object_or_404(Product, id=id)
     reviews = ProductReview.objects.filter(product=product_detail).order_by('-created_at')
@@ -84,15 +84,13 @@ def product_detail(request, id):
         if 'email_send' in request.POST:
             email = request.POST.get('email')
             try:
-                # Сохранение email в базе данных
                 Subscribe.objects.create(email=email)
                 
-                # Отправка письма
                 send_mail(
-                    'Подписка на рассылку',  # Subject
-                    f'Ваша почта: {email}\nСпасибо за подписку!',  # Message
-                    'noreply@somehost.local',  # From email
-                    [email],  # To email
+                    'Подписка на рассылку',  
+                    f'Ваша почта: {email}\nСпасибо за подписку!',
+                    'noreply@somehost.local', 
+                    [email], 
                     fail_silently=False,
                 )
                 return redirect('product_detail', id=id)

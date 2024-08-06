@@ -1,16 +1,12 @@
 from django.contrib import admin
-from apps.cart.models import Cart, CartItem
+from apps.cart.models import CartItem
 
 # Register your models here.
-class CartItemTabularInline(admin.TabularInline):
-    model = CartItem
-    extra = 0
-
-@admin.register(Cart)
-class CartAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'quantity')
-    inlines = (CartItemTabularInline, )
+# @admin.register(Cart)
+# class CartAdmin(admin.ModelAdmin):
+#     list_display = ('id', 'title', 'quantity')
+#     inlines = (CartItemTabularInline, )
 
 @admin.register(CartItem)
 class CartItemAdmin(admin.ModelAdmin):
-    list_display = ('cart', 'product', 'quantity', )
+    list_display = ('id', 'title', 'quantity', )
