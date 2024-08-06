@@ -8,7 +8,7 @@ from django.contrib.auth import logout
 from apps.telegram_bot.views import get_text
 
 from apps.settings.models import Setting
-from apps.cart.models import Cart, CartItem
+from apps.cart.models import CartItem
 from apps.products.models import Product, Category
 from apps.users.models import User
 from apps.billings.models import Billings
@@ -17,31 +17,36 @@ def checkout(request):
     setting = Setting.objects.latest('id')
     products = Product.objects.all()
     categories = Category.objects.all()
-    cart_items = Cart.objects.all()
-    total_price = sum([cart_item.total for cart_item in cart_items])
+    cart_items = CartItem.objects.all()
+    total_price = sum([cart_items.total for cart_items in cart_items])
     cart_items_count = cart_items.count()
     cart_products = CartItem.objects.all()
     if request.method=="POST":
         if 'checkout_form' in request.POST:
             first_name = request.POST.get('first_name')
-            email = request.POST.get('email')
+            last_name = request.POST.get('last_name')
             phone = request.POST.get('phone')
-            message = request.POST.get('message')
-            page_contact = Billings.objects.create(first_name=first_name, email=email, phone=phone, message=message)
+            address = request.POST.get('address')
+            city = request.POST.get('city')
+            page_contact = Billings.objects.create(first_name=first_name,last_name=last_name, address=address, phone=phone, city=city)
             if page_contact:
                 get_text(f"""
-                Оставлена заявка на обратный звонок 📞
+                Оставлена заявка на заказ 🛵
                          
     Имя пользователя:  {first_name}
-    Почта: {email}
+    Адрес: {address}
     Номер телефона: {phone}
-    Сообщение: {message}
+    Город: {city}\n
+    Товары:
 
     """)
+                
+                return redirect('confirm')
     return render(request, 'user/checkout.html', locals())
+
 def register(request):
     setting = Setting.objects.latest('id')
-    cart_items = Cart.objects.all()
+    cart_items = CartItem.objects.all()
     cart_items_count = cart_items.count()
     if request.method == "POST":
         if 'register_button' in request.POST:
@@ -76,7 +81,7 @@ def register(request):
 
 def login1(request):
     setting = Setting.objects.latest('id')
-    cart_items = Cart.objects.all()
+    cart_items = CartItem.objects.all()
     cart_items_count = cart_items.count()
     if request.method == "POST":
         if 'login_button' in request.POST:
@@ -95,3 +100,7 @@ def login1(request):
 def user_logout(request):
     logout(request)
     return redirect('/')
+
+def confirm(request):
+    setting = Setting.objects.latest('id')
+    return render(request, 'user/confirm.html', locals())
