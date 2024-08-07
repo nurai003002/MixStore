@@ -26,47 +26,101 @@
             <div class="shipping-address-form-wrapp">
                 <div class="shipping-address-form  checkout-form">
                     <div class="row-col-1 row-col">
-                        <form action="" method="POST">
+                        <form id="checkoutForm" action="" method="POST">
                             {% csrf_token %}
                             <div class="shipping-address">
-                                <h3 class="title-form">
-                                Адрес доставки 
-                                </h3>
+                                <h3 class="title-form">Адрес доставки</h3>
                                 <p class="form-row form-row-first">
                                     <label class="text">Имя</label>
-                                    <input name="first_name" title="first" type="text" class="input-text">
+                                    <input name="first_name" id="first_name" type="text" class="input-text">
+                                    <span class="error" id="error_first_name"></span>
                                 </p>
                                 <p class="form-row form-row-last">
                                     <label class="text">Фамилия</label>
-                                    <input name="last_name" title="last" type="text" class="input-text">
+                                    <input name="last_name" id="last_name" type="text" class="input-text">
+                                    <span class="error" id="error_last_name"></span>
                                 </p>
                                 <p class="form-row form-row-first">
                                     <label class="text">Номер телефона</label>
-                                    <input name="phone" title="zip" type="text" class="input-text">
+                                    <input name="phone" id="phone" type="text" class="input-text">
+                                    <span class="error" id="error_phone"></span>
                                 </p>
                                 <p class="form-row form-row-last">
                                     <label class="text">Адрес </label>
-                                    <input name="address" title="address" type="text" class="input-text">
+                                    <input name="address" id="address" type="text" class="input-text">
+                                    <span class="error" id="error_address"></span>
                                 </p>
                                 <p class="form-row form-row-first">
                                     <label class="text">Город</label>
-                                    <input name="city" title="zip" type="text" class="input-text">
+                                    <input name="city" id="city"  type="text" class="input-text">
+                                    <span class="error" id="error_city"></span>
                                 </p>
                                 <br>
-                                <button name="checkout_form" class="single_add_to_cart_button button">Заказать</button>
+                                <button type="submit" name="checkout_form" class="single_add_to_cart_button button">Заказать</button>
                                 <style>
                                     .single_add_to_cart_button.button {
                                         background-color: #c09578;
                                         border: none;
-                                        color: white; 
+                                        color: white;
                                     }
                                     .single_add_to_cart_button.button:hover {
                                         background-color: #c09578;
                                     }
+                                    .error {
+                                        color: red;
+                                        font-size: 12px;
+                                        font-family: Arial, sans-serif;  
+                                    }
                                 </style>
-            
                             </div>
                         </form>
+                        <script>
+                        document.getElementById('checkoutForm').addEventListener('submit', function(event) {
+                            let valid = true;
+                        
+                            // Получаем значения полей
+                            const firstName = document.getElementById('first_name').value.trim();
+                            const lastName = document.getElementById('last_name').value.trim();
+                            const phone = document.getElementById('phone').value.trim();
+                            const address = document.getElementById('address').value.trim();
+                            const city = document.getElementById('city').value.trim();
+                        
+                            // Сбрасываем предыдущие ошибки
+                            document.getElementById('error_first_name').innerText = '';
+                            document.getElementById('error_last_name').innerText = '';
+                            document.getElementById('error_phone').innerText = '';
+                            document.getElementById('error_address').innerText = '';
+                            document.getElementById('error_city').innerText = '';
+                        
+                            // Проверяем поля на пустоту
+                            if (!firstName) {
+                                document.getElementById('error_first_name').innerText = 'Это поле не должно быть пустым';
+                                valid = false;
+                            }
+                            if (!lastName) {
+                                document.getElementById('error_last_name').innerText = 'Это поле не должно быть пустым';
+                                valid = false;
+                            }
+                            if (!phone) {
+                                document.getElementById('error_phone').innerText = 'Это поле не должно быть пустым';
+                                valid = false;
+                            }
+                            if (!address) {
+                                document.getElementById('error_address').innerText = 'Это поле не должно быть пустым';
+                                valid = false;
+                            }
+                            if (!city) {
+                                document.getElementById('error_city').innerText = 'Это поле не должно быть пустым';
+                                valid = false;
+                            }
+                        
+                            // Если есть ошибки, отменяем отправку формы
+                            if (!valid) {
+                                event.preventDefault();
+                            }
+                        });
+                        </script>
+                        
                     </div>
                     <div class="row-col-2 row-col">
                         <div class="your-order">

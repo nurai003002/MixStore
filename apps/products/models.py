@@ -84,7 +84,7 @@ class Product(models.Model):
         verbose_name="Основная фотография",
         blank = True, null = True
     )
-    price = models.PositiveIntegerField(
+    price = models.IntegerField(
         verbose_name="Цена"
     )
     old_price = models.PositiveIntegerField(
