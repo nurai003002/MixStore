@@ -44,6 +44,8 @@ def send_mailing(message:types.Message):
 def get_text(message):
     bot.send_message(admin_id, message)
 
+
+
 def get_text_doctor(message, id):
     bot.send_message(id, message)
 

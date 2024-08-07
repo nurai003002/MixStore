@@ -37,7 +37,7 @@ class BillingProduct(models.Model):
     )
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, 
-        related_name='products_billings', verbose_name="Товар"
+        related_name='billing_products', verbose_name="Товар"
     )
     quantity = models.PositiveIntegerField(
         verbose_name="Количество товаров"
@@ -45,9 +45,12 @@ class BillingProduct(models.Model):
     price = models.PositiveBigIntegerField(
         verbose_name="Итоговая цена товара", default=0
     )
-    status = models.BooleanField(
-        verbose_name="Статус", default=False
-    )
+    # status = models.BooleanField(
+    #     verbose_name="Статус", default=False
+    # )
+    status = models.CharField(max_length=20,
+                               default='pending',
+                               verbose_name="Статус")
     created = models.DateTimeField(
         auto_now_add=True, verbose_name="Дата создания"
     )

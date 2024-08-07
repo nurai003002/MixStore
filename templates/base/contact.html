@@ -43,14 +43,14 @@
                                 <h2 class="title">
                                     Свяжитесь с нами!
                                 </h2>
-                                <form action="#" method="POST" class="ysera-contact-fom">
-                                    {% csrf_token   %}
+                                <form method="POST" class="ysera-contact-fom">
+                                    {% csrf_token %}
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <p>
                                                 <span class="form-label">Ваше имя *</span>
                                                 <span class="form-control-wrap your-name">
-														<input title="your-name" type="text" name="name" size="40"
+														<input type="text" name="name" size="40"
                                                                class="form-control form-control-name">
 													</span>
                                             </p>
@@ -62,7 +62,7 @@
 														Ваша почта *
 													</span>
                                                 <span class="form-control-wrap your-email">
-														<input title="your-email" type="email" name="email" size="40"
+														<input  type="email" name="email" size="40"
                                                                class="form-control form-control-email">
 													</span>
                                             </p>
@@ -73,7 +73,7 @@
                                             <p>
                                                 <span class="form-label">Номер</span>
                                                 <span class="form-control-wrap your-phone">
-														<input title="your-phone" type="text" name="phone"
+														<input  type="text" name="phone"
                                                                class="form-control form-control-phone">
 													</span>
                                             </p>

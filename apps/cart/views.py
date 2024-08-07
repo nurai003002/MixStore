@@ -44,6 +44,26 @@ def cart(request):
 def add_to_cart(request, product_id):
     product_item = get_object_or_404(Product, pk=product_id)
 
+    cart = request.session.get('cart', [])
+    print(f"Исходное содержимое корзины: {cart}")
+
+    for item in cart:
+        if item['product_id'] == product_id:
+            item['quantity'] += 1
+            item['total'] = item['price'] * item['quantity']
+            break
+    else:
+        cart.append({
+            'product_id': product_id,
+            'quantity': 1,
+            'title': product_item.title,
+            'price': product_item.price,
+            'image': str(product_item.image), 
+            'color': product_item.color,
+            'size': product_item.size,
+            'total': product_item.price
+        })
+    
     cart_item, created = CartItem.objects.get_or_create(
         title=product_item.title,
         price=product_item.price,
@@ -56,6 +76,10 @@ def add_to_cart(request, product_id):
         cart_item.quantity += 1
         cart_item.total = cart_item.price * cart_item.quantity
         cart_item.save()
+
+    request.session['cart'] = cart
+    request.session.modified = True
+    print(f"Обновленное содержимое корзины: {request.session['cart']}")
     return redirect('cart')
 
 

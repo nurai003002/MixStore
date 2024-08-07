@@ -61,6 +61,10 @@ from apps.products.models import Product
 
 
 class CartItem(models.Model):
+    # product = models.ForeignKey(
+    #     Product, on_delete=models.CASCADE, 
+    #     related_name='cart_products', verbose_name="Товар"
+    # )
     image = ResizedImageField(
         force_format="WEBP", 
         quality=100, 
@@ -101,7 +105,7 @@ class CartItem(models.Model):
         default="S",
         blank=True, null=True
     )
-    quantity = models.PositiveIntegerField(
+    quantity = models.IntegerField(
         verbose_name = 'Количество продукта',
         blank=True, null=True
     )
