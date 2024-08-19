@@ -8,6 +8,7 @@ from django.contrib.auth import logout
 from apps.telegram_bot.views import get_text
 from django.contrib.auth.decorators import login_required
 import requests
+from decimal import Decimal
 
 from apps.settings.models import Setting
 from apps.cart.models import CartItem
@@ -15,16 +16,21 @@ from apps.products.models import Product, Category
 from apps.users.models import User
 from apps.billings.models import Billings, BillingProduct
 # Create your views here.
-@login_required(login_url='/users/register/') 
+# @login_required(login_url='/user/register/') 
 def checkout(request):
     setting = Setting.objects.latest('id')
     products = Product.objects.all()
     categories = Category.objects.all()
-    cart_items = CartItem.objects.all()
-    total_price = sum([cart_items.total for cart_items in cart_items])
+
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        session_key = request.session.session_key
+        cart_items = CartItem.objects.filter(session_key=session_key)
+
+    total_price = sum([item.total for item in cart_items])
     cart_items_count = cart_items.count()
-    cart_products = CartItem.objects.all()
-    
+
     if request.method == "POST":
         if 'checkout_form' in request.POST:
             # Извлечение данных из формы
@@ -47,27 +53,25 @@ def checkout(request):
                 print(f"Ошибка при создании контакта: {e}")
                 return HttpResponse("Ошибка при создании заказа.", status=500)
 
-            cart_products = request.session.get('cart', [])
-            
-            if not cart_products:
+            if not cart_items.exists():
                 print("Корзина пуста или не существует в сессии")
                 return HttpResponse("Корзина пуста.", status=400)
 
             items_text = ""
-            for cart_product in cart_products:
-                try:
-                    product = Product.objects.get(id=cart_product['product_id'])
-                    BillingProduct.objects.create(
-                        product=product,
-                        quantity=cart_product['quantity'],
-                        price=product.price,  # Убедитесь, что поле price существует в модели Product
-                        billing=page_contact  # Связь с Billing
-                    )
-                    items_text += f"{product.title} - {cart_product['quantity']} шт. по цене {product.price} каждый\n"
-                except Product.DoesNotExist:
-                    items_text += f"Неизвестный продукт: {cart_product['product_id']}\n"
+            for cart_product in cart_items:
+                BillingProduct.objects.create(
+                    product=cart_product.product,
+                    quantity=cart_product.quantity,
+                    price=cart_product.price,
+                    billing=page_contact
+                )
+                items_text += f"{cart_product.product.title} - {cart_product.quantity} шт. по цене {cart_product.price} каждый\n"
+                total_price = Decimal(0)  # Initialize as a Decimal
+                for cart_product in cart_items:
+                    total_price += cart_product.quantity * cart_product.price  # Ensure this is a numeric operation
 
-            # Сообщение для отправки в Telegram
+                # Convert to string when displaying
+                total_price_display = f"{total_price:.2f}"
             message = f"""
     Оставлена заявка на заказ 🛵
                         
@@ -76,19 +80,16 @@ def checkout(request):
     Номер телефона: {phone}
     Город: {city}
             
-Товары:\n
+Товары:
 {items_text}
+
+Общая сумма: {total_price} сомов
     """
             send_telegram_message(message)
             
-            # Очистка корзины
-            print("Очищаем корзину в сессии")
-            try:
-                del request.session['cart']
-                request.session.modified = True
-                print("Корзина успешно очищена")
-            except KeyError:
-                print("Корзина не найдена в сессии")
+            cart_items.delete()  
+            request.session.flush() 
+            
             return redirect('confirm')
     return render(request, 'user/checkout.html', locals())
 

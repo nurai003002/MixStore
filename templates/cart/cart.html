@@ -42,50 +42,96 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for cart_item in cart_items %}
-                                    <tr class="cart_item">
-                                        <td class="product-remove">
-                                            <a href="{% url 'remove_from_cart' cart_item.id %}" class="remove"></a>
-                                        </td>
-                                        <td class="product-thumbnail">
-                                            <a href="{% url 'product_detail' cart_item.id %}">
-                                                <img src="{{cart_item.image.url}}" alt="img"
-                                                     class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image">
-                                            </a>
-                                        </td>
-                                        <td class="product-name" data-title="Product">
-                                            <a href="{% url 'product_detail' cart_item.id %}" class="title">{{cart_item.title}}</a>
-                                            <span class="attributes-select attributes-color">{{cart_item.product.color}}</span>
-                                            <span class="attributes-select attributes-size">{{cart_item.product.size}}</span>
-                                        </td>
-                                        <td class="product-quantity" data-title="Quantity">
-                                            <div class="quantity">
-                                                <div class="control">
-                                                    <a class="btn-number qtyminus quantity-minus" href="#">-</a>
-                                                    <input type="text" data-step="1" data-min="0" value="1" title="Qty"
-                                                           class="input-qty qty" size="4">
-                                                    <a href="#" class="btn-number qtyplus quantity-plus">+</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="product-price" data-title="Price">
-													<span class="woocommerce-Price-amount amount">
-														<span class="woocommerce-Price-currencySymbol">
-														</span>
-														{{cart_item.price}}
-													</span>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
+                                    {% if cart_items %}
+                                            {% for cart_item in cart_items %}
+                                            <tr class="cart_item">
+                                                <td class="product-remove">
+                                                    <a href="{% url 'remove_from_cart' cart_item.id %}" class="remove"></a>
+                                                </td>
+                                                <td class="product-thumbnail">
+                                                    <a href="{% url 'product_detail' cart_item.product.id %}">
+                                                        <img src="{{cart_item.product.image.url}}" alt="img" class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image">
+                                                    </a>
+                                                </td>
+                                                <td class="product-name" data-title="Product">
+                                                    <a href="{% url 'product_detail' cart_item.id %}" class="title">{{cart_item.title}}</a>
+                                                    <span class="attributes-select attributes-color">{{cart_item.product.color}}</span>
+                                                    <span class="attributes-select attributes-size">{{cart_item.product.size}}</span>
+                                                </td>
+                                                <td class="product-quantity" data-title="Quantity">
+                                                        <div class="control">
+                                                            <span class="qty">{{cart_item.quantity}}шт</span>
+                                                        </div>
+                                                        <style>
+                                                            .control .qty {
+                                                                font-size: 16px;
+                                                                padding: 5px;
+                                                                display: inline-block;
+                                                            }
+                                                        </style>
+                                                </td>
+                                                <td class="product-price" data-title="Price">
+                                                    <span class="woocommerce-Price-amount amount" id="price-{{cart_item.id}}">{{cart_item.total}}</span>
+                                                </td>
+                                            </tr>
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    const cartItems = document.querySelectorAll('.cart_item');
+
+                                                    cartItems.forEach(function (item) {
+                                                        const qtyInput = item.querySelector('.input-qty');
+                                                        const priceField = item.querySelector('.woocommerce-Price-amount.amount');
+                                                        const qtyMinus = item.querySelector('.qtyminus');
+                                                        const qtyPlus = item.querySelector('.qtyplus');
+                                                        let basePrice = parseFloat(priceField.dataset.basePrice.replace(',', '.')); // Base price per item
+
+                                                        qtyMinus.addEventListener('click', function (e) {
+                                                            e.preventDefault();
+                                                            updateQuantityAndPrice(-1, qtyInput, priceField, basePrice);
+                                                        });
+
+                                                        qtyPlus.addEventListener('click', function (e) {
+                                                            e.preventDefault();
+                                                            updateQuantityAndPrice(1, qtyInput, priceField, basePrice);
+                                                        });
+
+                                                        // Store the base price initially if not already stored
+                                                        if (!priceField.dataset.basePrice) {
+                                                            priceField.dataset.basePrice = basePrice.toFixed(2);
+                                                        }
+                                                    });
+
+                                                    function updateQuantityAndPrice(change, qtyInput, priceField, basePrice) {
+                                                        let quantity = parseInt(qtyInput.value) + change;
+                                                        if (quantity < 1) quantity = 1;  // Ensure quantity doesn't go below 1
+                                                        qtyInput.value = quantity;
+                                                        const totalPrice = (basePrice * quantity).toFixed(2);
+                                                        priceField.innerText = totalPrice.replace('.', ',');
+                                                        updateTotalPrice();
+                                                    }
+
+                                                    function updateTotalPrice() {
+                                                        let total = 0;
+                                                        const priceFields = document.querySelectorAll('.woocommerce-Price-amount.amount');
+                                                        priceFields.forEach(function (priceField) {
+                                                            const price = parseFloat(priceField.innerText.replace(',', '.'));
+                                                            total += price;
+                                                        });
+                                                        const totalField = document.querySelector('.total-price');
+                                                        totalField.innerText = total.toFixed(2).replace('.', ',') + ' сом';
+                                                    }
+                                                });
+                                            </script>
+                                            {% endfor %}
+                                    {% else %}
+                                        <p>Ваша корзина пуста.</p>
+                                    {% endif %}
+                                    
                                     <tr>
                                         <td class="actions">
                                             <div class="order-total">
-														<span class="title">
-															Общая сумма:
-														</span>
-                                                <span class="total-price">
-															{{total_price}} сом
-														</span>
+                                                <span class="title">Общая сумма:</span>
+                                                <span class="total-price">{{ total_price }} сом</span>
                                             </div>
                                         </td>
                                     </tr>
