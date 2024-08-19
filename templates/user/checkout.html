@@ -128,36 +128,43 @@
                                 Ваши заказы
                             </h3>
                             <ul class="list-product-order">
-                                {% for cart_product in cart_products %}
-                                <li class="product-item-order">
-                                    <div class="product-thumb">
-                                        <a href="{% url 'product_detail' cart_product.id %}">
-                                            <img src="{{cart_product.image.url}}" alt="img">
-                                        </a>
-                                    </div>
-                                    <div class="product-order-inner">
-                                        <h5 class="product-name">
-                                            <a href="{% url 'product_detail' cart_product.id %}">{{cart_product.title}}</a>
-                                        </h5>
-                                        <span class="attributes-select attributes-color">{{cart_product.color}}</span>
-                                        <span class="attributes-select attributes-size">{{cart_product.size}}</span>
-                                        <div class="price">
-                                            {{cart_product.price}}сом
-                                        </div>
-                                    </div>
-                                </li>
-                                {% endfor %}
+                                {% if cart_items %}
+                                    {% for cart_product in cart_items %}
+                                        <li class="product-item-order">
+                                            <div class="product-thumb">
+                                                <a href="#">
+                                                    <img src="{{cart_product.image.url}}" alt="img">
+                                                </a>
+                                            </div>
+                                            <div class="product-order-inner">
+                                                <h5 class="product-name">
+                                                    <a href="#">{{cart_product.title}}</a>
+                                                </h5>
+                                                <span class="attributes-select attributes-color">{{cart_product.color}}</span>
+                                                <span class="attributes-select attributes-size">{{cart_product.size}}</span>
+                                                <div class="price">
+                                                    {{cart_product.price}} сом
+                                                    <br>
+                                                    {{cart_product.quantity}}шт
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                    <p>Ваша корзина пуста.</p>
+                                {% endif %}
                             </ul>
                             <div class="order-total">
-									<span class="title">
-										Общая сумма:
-									</span>
+                                <span class="title">
+                                    Общая сумма:
+                                </span>
                                 <span class="total-price">
-										{{total_price}} сом
-									</span>
+                                    {{total_price}} сом
+                                </span>
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>

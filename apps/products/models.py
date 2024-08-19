@@ -91,7 +91,10 @@ class Product(models.Model):
         verbose_name="Старая цена",
         blank=True, null=True
     )
-
+    quantity = models.IntegerField(
+        verbose_name = 'Количество продукта',
+        blank=True, null=True
+    )
     def __str__(self):
         return f"{self.title} {self.price} KGS"
 

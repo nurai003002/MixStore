@@ -3,6 +3,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail, BadHeaderError
 from django.http import JsonResponse
+from django.db.models import Sum, Q, Count
 
 from apps.settings.models import Setting
 from apps.products.models import Product, Category, ProductReview
@@ -109,3 +110,47 @@ def product_list(request, category_id=None):
         products = Product.objects.all().order_by('-id')
 
     return render(request, 'product/products.html', locals())
+
+def search(request):
+    setting = Setting.objects.latest('id')
+    categories = Category.objects.all()
+    products = Product.objects.filter(parent=None).order_by('-created')
+    query = request.POST.get('query', '').strip()
+    print(query)
+    # products = Product.objects.all()  # Пустой QuerySet для начала
+    print("Query", query)
+    if query:
+        query_words = query.split()  # Разбиваем запрос на слова
+        q_objects = Q()  # Создаем пустой Q-объект для накопления условий поиска
+        for word in query_words:
+            q_objects |= Q(title__icontains=word) | Q(description__icontains=word)
+        print(query)
+        products = Product.objects.filter(q_objects).values('id', 'title', 'description', 'price', 'image')
+    return render(request, 'products/shop-4-column.html', locals())
+
+def ajax_search(request):
+    query = request.GET.get('query', '').strip()
+    print("Received query:", query)  # Для отладки
+
+    products = Product.objects.none()
+    categories = Category.objects.none()
+
+    if query:
+        query_words = query.split()  # Разбиваем запрос на слова
+        product_query = Q()
+        category_query = Q()
+
+        for word in query_words:
+            product_query |= Q(title__icontains=word) | Q(description__icontains=word)
+            category_query |= Q(title__icontains=word)
+
+        print("Product query:", product_query)  # Для отладки
+        print("Category query:", category_query)  # Для отладки
+
+        products = Product.objects.filter(product_query).values('id', 'title', 'description', 'price')
+        categories = Category.objects.filter(category_query).values('id', 'title',  'slug')
+
+        print("Found products:", products)  # Для отладки
+        print("Found categories:", categories)  # Для отладки
+
+    return JsonResponse({'products': list(products), 'categories': list(categories)})

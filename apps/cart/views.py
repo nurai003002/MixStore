@@ -43,10 +43,8 @@ def cart(request):
 
 def add_to_cart(request, product_id):
     product_item = get_object_or_404(Product, pk=product_id)
-
     cart = request.session.get('cart', [])
-    print(f"Исходное содержимое корзины: {cart}")
-
+    
     for item in cart:
         if item['product_id'] == product_id:
             item['quantity'] += 1
@@ -64,24 +62,36 @@ def add_to_cart(request, product_id):
             'total': product_item.price
         })
     
+    # Обновляем сессию
+    request.session['cart'] = cart
+    request.session.modified = True
+
+    # Синхронизация с базой данных
+    if request.user.is_authenticated:
+        user = request.user
+    else:
+        user = None
+
     cart_item, created = CartItem.objects.get_or_create(
-        title=product_item.title,
-        price=product_item.price,
-        image=product_item.image,
-        color=product_item.color,
-        size=product_item.size,
-        defaults={'total': product_item.price} 
+        product=product_item,
+        user=user,
+        session_key=request.session.session_key,
+        defaults={
+            'quantity': 1,
+            'price': product_item.price,
+            'total': product_item.price,
+            'image': product_item.image,
+            'color': product_item.color,
+            'size': product_item.size
+        }
     )
+    
     if not created:
         cart_item.quantity += 1
         cart_item.total = cart_item.price * cart_item.quantity
         cart_item.save()
 
-    request.session['cart'] = cart
-    request.session.modified = True
-    print(f"Обновленное содержимое корзины: {request.session['cart']}")
     return redirect('cart')
-
 
 def remove_from_cart(request, cart_item_id):
     cart_item = get_object_or_404(CartItem, pk=cart_item_id)
