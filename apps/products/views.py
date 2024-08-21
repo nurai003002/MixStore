@@ -3,6 +3,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail, BadHeaderError
 from django.http import JsonResponse
+from django.urls import reverse
 from django.db.models import Sum, Q, Count
 
 from apps.settings.models import Setting
@@ -112,21 +113,35 @@ def product_list(request, category_id=None):
     return render(request, 'product/products.html', locals())
 
 def search(request):
-    setting = Setting.objects.latest('id')
-    categories = Category.objects.all()
-    products = Product.objects.filter(parent=None).order_by('-created')
-    query = request.POST.get('query', '').strip()
-    print(query)
-    # products = Product.objects.all()  # Пустой QuerySet для начала
-    print("Query", query)
+    query = request.GET.get('query', '').strip()
+    results = []
+    
     if query:
-        query_words = query.split()  # Разбиваем запрос на слова
         q_objects = Q()  # Создаем пустой Q-объект для накопления условий поиска
-        for word in query_words:
-            q_objects |= Q(title__icontains=word) | Q(description__icontains=word)
-        print(query)
-        products = Product.objects.filter(q_objects).values('id', 'title', 'description', 'price', 'image')
-    return render(request, 'products/shop-4-column.html', locals())
+        
+        # Поиск по первой букве
+        q_objects |= Q(title__istartswith=query[0]) | Q(description__istartswith=query[0])
+        
+        # Поиск по первым трём буквам
+        if len(query) >= 3:
+            q_objects |= Q(title__istartswith=query[:3]) | Q(description__istartswith=query[:3])
+        
+        # Поиск по всему слову
+        q_objects |= Q(title__icontains=query) | Q(description__icontains=query)
+        
+        products = Product.objects.filter(q_objects)
+        
+        # Формируем список результатов
+        for product in products:
+            product_url = reverse('product_detail', args=[product.id])
+            results.append({
+                'title': product.title,
+                'price': product.price,
+                'url': product_url
+            })
+
+        return JsonResponse({'results': results})
+    return render(request, 'product/products.html', locals())
 
 def ajax_search(request):
     query = request.GET.get('query', '').strip()

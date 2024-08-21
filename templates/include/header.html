@@ -5,22 +5,88 @@
             <div class="row">
                 <div class="col-lg-4 col-sm-6 col-md-4 col-xs-7 col-ts-12 header-element">
                     <div class="block-search-block">
-                        <form class="form-search">
+                        <form class="form-search" action="{% url 'search' %}" method="get" id="searchForm">
                             <div class="form-content">
                                 <div class="inner">
-                                    <input type="text" class="input" name="s" value="" placeholder="Поиск....">
+                                    <input type="text" class="input" name="s" id="searchInput" placeholder="Поиск....">
                                     <button class="btn-search" type="submit">
                                         <span class="icon-search"></span>
                                     </button>
                                 </div>
+                                <ul id="searchResults" style="display: none;"></ul>
                             </div>
                         </form>
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                            $(document).ready(function() {
+                                $('#searchInput').on('input', function() {
+                                    var query = $(this).val();
+                                    if (query.length > 0) {
+                                        $.ajax({
+                                            url: '{% url "search" %}',
+                                            data: {
+                                                'query': query
+                                            },
+                                            dataType: 'json',
+                                            success: function(data) {
+                                                $('#searchResults').empty().show();
+                                                if (data.results.length > 0) {
+                                                    $.each(data.results, function(index, value) {
+                                                        $('#searchResults').append('<li data-url="' + value.url + '">' + value.title + '</li>');
+                                                    });
+                                                } else {
+                                                    $('#searchResults').append('<li>Ничего не найдено</li>');
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        $('#searchResults').hide();
+                                    }
+                                });
+
+                                // Перенаправление на страницу товара при клике на результат
+                                $(document).on('click', '#searchResults li', function() {
+                                    var url = $(this).data('url');
+                                    window.location.href = url;
+                                });
+
+                                // Скрыть результаты поиска при клике вне формы
+                                $(document).click(function(e) {
+                                    if (!$(e.target).closest('.form-search').length) {
+                                        $('#searchResults').hide();
+                                    }
+                                });
+                            });
+
+                        </script>
+                        <style>
+                            #searchResults {
+                                list-style-type: none;
+                                padding: 0;
+                                margin: 0;
+                                border: 1px solid #ccc;
+                                background-color: #fff;
+                                position: absolute;
+                                width: 100%;
+                                z-index: 1000;
+                            }
+
+                            #searchResults li {
+                                padding: 8px;
+                                cursor: pointer;
+                            }
+
+                            #searchResults li:hover {
+                                background-color: #f0f0f0;
+                            }
+
+                        </style>
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6 col-md-4 col-xs-5 col-ts-12">
                     <div class="logo">
                         <a href="{% url 'index' %}">
-                            <img src="{{setting.logo.url}}" alt="logo">
+                            <img src="{{setting.logo.url}}" alt="logo" style="width: 350px;" height="350px">
                         </a>
                     </div>
                 </div>
@@ -28,7 +94,6 @@
                     .logo {
                         margin-top: -70px;
                     }
-
                 </style>
                 <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12 col-ts-12">
                     <div class="header-control">
