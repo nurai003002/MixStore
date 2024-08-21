@@ -21,19 +21,16 @@
                         <h2 class="widgettitle">Быстрые ссылки</h2>
                         <ul class="menu">
                             <li class="menu-item">
-                                <a href="#">New arrivals</a>
+                                <a href="{% url 'index' %}">Главная</a>
                             </li>
                             <li class="menu-item">
-                                <a href="#">Life style</a>
+                                <a href="{% url 'product_index' %}">Магазин</a>
                             </li>
                             <li class="menu-item">
-                                <a href="#">Bracelets</a>
+                                <a href="{% url 'contact' %}">Контакты</a>
                             </li>
                             <li class="menu-item">
-                                <a href="#">By Metal</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#">Earrings</a>
+                                <a href="{% url 'checkout' %}">Заказать</a>
                             </li>
                         </ul>
                     </div>
@@ -54,26 +51,36 @@
                 </div>
                 <div class="box-footer col-xs-12 col-sm-4 col-md-4 col-lg-4">
                     <div class="ysera-custommenu default">
-                        <h2 class="widgettitle">Information</h2>
-                        <ul class="menu">
-                            <li class="menu-item">
-                                <a href="#">FAQs</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#">Track Order</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#">Delivery</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#">Contact Us</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#">Return</a>
-                            </li>
-                        </ul>
+                        <a href="{% url 'index' %}">
+                            <img src="{{setting.logo.url}}" alt="" style="width: 300px;" height="300px">
+                        </a>
+                        <p>{{setting.description}}</p>
                     </div>
                 </div>
+                <style>
+                    .box-footer {
+                        display: flex;
+                        align-items: center; 
+                    }
+                    
+                    .ysera-custommenu {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center; 
+                        text-align: left; 
+                    }
+                    
+                    .ysera-custommenu img {
+                        align-self: flex-start; 
+                    }
+                    
+                    .ysera-custommenu p {
+                        text-align: left; 
+                        margin-top: 10px; 
+                        margin-left: 50px;
+                    }
+                
+                </style>
             </div>
             <div class="footer-end">
                 <div class="row">
