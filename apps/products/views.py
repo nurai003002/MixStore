@@ -142,30 +142,3 @@ def search(request):
 
         return JsonResponse({'results': results})
     return render(request, 'product/products.html', locals())
-
-def ajax_search(request):
-    query = request.GET.get('query', '').strip()
-    print("Received query:", query)  # Для отладки
-
-    products = Product.objects.none()
-    categories = Category.objects.none()
-
-    if query:
-        query_words = query.split()  # Разбиваем запрос на слова
-        product_query = Q()
-        category_query = Q()
-
-        for word in query_words:
-            product_query |= Q(title__icontains=word) | Q(description__icontains=word)
-            category_query |= Q(title__icontains=word)
-
-        print("Product query:", product_query)  # Для отладки
-        print("Category query:", category_query)  # Для отладки
-
-        products = Product.objects.filter(product_query).values('id', 'title', 'description', 'price')
-        categories = Category.objects.filter(category_query).values('id', 'title',  'slug')
-
-        print("Found products:", products)  # Для отладки
-        print("Found categories:", categories)  # Для отладки
-
-    return JsonResponse({'products': list(products), 'categories': list(categories)})
