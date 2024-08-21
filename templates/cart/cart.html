@@ -124,12 +124,18 @@
                                             </script>
                                             {% endfor %}
                                     {% else %}
-                                        <p>Ваша корзина пуста.</p>
+                                        <p>Ваша корзина пуста. Давайте делать покупки</p>
                                     {% endif %}
                                     
                                     <tr>
                                         <td class="actions">
                                             <div class="order-total">
+                                                <span class="title">Доставка:</span>
+                                                {% if total_price > 1500 %}
+                                                    <span class="delivery-price">Бесплатно</span>
+                                                {% else %}
+                                                    <span class="delivery-price">{{ delivery_cost }} сом</span>
+                                                {% endif %}<br>
                                                 <span class="title">Общая сумма:</span>
                                                 <span class="total-price">{{ total_price }} сом</span>
                                             </div>

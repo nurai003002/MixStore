@@ -132,9 +132,7 @@
                                     {% for cart_product in cart_items %}
                                         <li class="product-item-order">
                                             <div class="product-thumb">
-                                                <a href="#">
                                                     <img src="{{cart_product.image.url}}" alt="img">
-                                                </a>
                                             </div>
                                             <div class="product-order-inner">
                                                 <h5 class="product-name">
@@ -155,7 +153,13 @@
                                 {% endif %}
                             </ul>
                             <div class="order-total">
-                                <span class="title">
+                                <span class="title">Доставка:</span>
+                                {% if total_price > 1500 %}
+                                    <span class="delivery-price">Бесплатно</span>
+                                {% else %}
+                                    <span class="delivery-price">{{ delivery_cost }} сом</span>
+                                {% endif %}
+                                <br><span class="title">
                                     Общая сумма:
                                 </span>
                                 <span class="total-price">

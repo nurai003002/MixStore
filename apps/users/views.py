@@ -21,6 +21,9 @@ def checkout(request):
     setting = Setting.objects.latest('id')
     products = Product.objects.all()
     categories = Category.objects.all()
+    cart_items = CartItem.objects.all()
+
+    cart_items_count = cart_items.count()
 
     if request.user.is_authenticated:
         cart_items = CartItem.objects.filter(user=request.user)
@@ -28,8 +31,12 @@ def checkout(request):
         session_key = request.session.session_key
         cart_items = CartItem.objects.filter(session_key=session_key)
 
-    total_price = sum([item.total for item in cart_items])
-    cart_items_count = cart_items.count()
+    delivery_cost = 250
+    total_price = sum([cart_items.total for cart_items in cart_items])
+    if total_price < 1500:
+        total_price += delivery_cost  
+    else:
+        free_delivery = True
 
     if request.method == "POST":
         if 'checkout_form' in request.POST:
@@ -72,6 +79,7 @@ def checkout(request):
 
                 # Convert to string when displaying
                 total_price_display = f"{total_price:.2f}"
+                
             message = f"""
     Оставлена заявка на заказ 🛵
                         
@@ -83,7 +91,8 @@ def checkout(request):
 Товары:
 {items_text}
 
-Общая сумма: {total_price} сомов
+Общая сумма: {delivery_cost+total_price} сомов
+вместе с доставкой
     """
             send_telegram_message(message)
             

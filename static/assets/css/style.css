@@ -1615,9 +1615,9 @@ table tr:last-child td, table tr:last-child th {
 	font-family: 'Roboto';
 	color: #555555;
 	position: relative;
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 	font-weight: 600;
-	border: 2px solid #e9e9e9;
+	/* border: 2px solid #e9e9e9; */
 	padding: 0 15px;
 	height: 43px;
 	display: inline-block;
@@ -1625,7 +1625,7 @@ table tr:last-child td, table tr:last-child th {
 	width: 102px;
 	border-radius: 0;
 }
-.block-minicart .shopcart-icon::after {
+.block-minicart .::after {
 	content: "\f107";
 	font-family: 'FontAwesome';
 	position: absolute;
@@ -1643,7 +1643,7 @@ table tr:last-child td, table tr:last-child th {
 	height: 22px;
 	border-radius: 50%;
 	top: -5px;
-	right: -5px;
+	right: 47px;
 	color: #ffffff;
 	font-size: 14px;
 	line-height: 22px;
@@ -1661,7 +1661,7 @@ table tr:last-child td, table tr:last-child th {
 	padding: 20px
 }
 .block-minicart .no-product .text {
-	color: #888;
+	color: #ffffff;
 	font-weight: 700;
 	margin-bottom: 0;
 }
