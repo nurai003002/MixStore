@@ -65,7 +65,7 @@ def product_detail(request, id):
     cart_items = CartItem.objects.all()  
     cart_items_count = cart_items.count()
     product_detail = get_object_or_404(Product, id=id)
-    reviews = ProductReview.objects.filter(product=product_detail).order_by('-created_at')
+    reviews = ProductReview.objects.filter(product=id).order_by('-created_at')
     new_products_indices = [product.id for product in Product.objects.all().order_by('-id')[:3]]
     reviews_count = reviews.count()
 

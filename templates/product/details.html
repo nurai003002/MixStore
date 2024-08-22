@@ -74,10 +74,7 @@
                                         Цвета:
                                     </div>
                                     <div class="list-color list-item">
-                                        <a href="?color=WHITE" class="color1" style="background-color: #FFFFFF;"></a>
-                                        <a href="?color=BLACK" class="color2" style="background-color: #000000;"></a>
-                                        <a href="?color=GRAY" class="color3 active" style="background-color: #808080;"></a>
-                                        <a href="?color=BROWN" class="color4" style="background-color: #c09578;"></a>
+                                        <p>{{product_detail.color}}</p>
                                     </div>
                                 </div>
                                 <div class="attribute attribute_size">
@@ -98,10 +95,14 @@
                                             <a class="btn-number qtyplus">+</a>
                                         </div>
                                     </div>
+                                    {% if product_detail.status != 'нет в наличии' %}
                                     <a href="#" id="add-to-cart-btn" class="single_add_to_cart_button button">В корзину</a>
+                                    {% else %}
+                                    <p class="out-of-stock-text">Товар временно недоступен</p>
+                                    {% endif %}
                                 </div>
                             </div>
-
+                            
                             <script>
                                 document.addEventListener('DOMContentLoaded', function() {
                                     const qtyInput = document.querySelector('.input-qty.qty');
@@ -136,40 +137,134 @@
                     <div class="tab-details-product">
                         <ul class="tab-link">
                             <li class="">
-                                <a data-toggle="tab" aria-expanded="true" href="#reviews">Отзывы</a>
+                                <a data-toggle="tab" aria-expanded="true" style="font-size: 25px; color: #c09578;" href="#reviews">Отзывы</a>
                             </li>
                         </ul>
                         <div class="tab-container">
-                            <div id="reviews" class="tab-panel">
+                            <!-- <div id="reviews" class="tab-panel"> -->
                                 <div class="reviews-tab">
                                     <div class="comments">
                                         <h2 class="reviews-title">
-                                            {{ reviews.count }} отзыв(ов) для
-                                            <span>{{product_detail.title}}</span>
+                                            {{ reviews.count }} отзыв(ов) для <span>{{product_detail.title}}</span>
                                         </h2>
+                                    
                                         <ol class="commentlist">
-                                            <li class="conment">
-                                                {% for review in reviews %}
+                                            {% for review in reviews|dictsortreversed:"created_at" %}
+                                            <li class="comment-item" style="display: none;">
                                                 <div class="conment-container">
                                                     <a href="#" class="avatar">
                                                         <img src="{% static 'assets/Group 44.png' %}" alt="img" style="border-radius: 50%; size: 10px;">
                                                     </a>
                                                     <div class="comment-text">
                                                         <p class="meta">
-                                                            <strong class="author">{{user.username}}</strong>
+                                                            <strong class="author">{{ review.user.username }}</strong>
                                                             <span>-</span>
                                                             <span class="time">{{ review.created_at }}</span>
                                                         </p>
                                                         <div class="description">
-                                                            <p>{{review.text}}</p>
+                                                            <p>{{ review.text }}</p>
                                                         </div>
                                                     </div>
-                                                    {% endfor %}
                                                 </div>
                                             </li>
+                                            {% endfor %}
                                         </ol>
+                                        
+                                        <style>
+                                            .comment-item {
+                                                border: 1px solid #c09578; /* Цвет обводки */
+                                                padding: 15px; /* Внутренние отступы */
+                                                margin-bottom: 10px; /* Отступ снизу между комментариями */
+                                                border-radius: 10px; /* Скругление углов */
+                                                background-color: #ffffff; /* Цвет фона, опционально */
+                                            }
+                                            </style>
+                                            
+                                            <div style="display: flex; align-items: center; margin-top: 20px;">
+                                                <button id="show-review-form" style="border-radius: 8px; background-color: #c09578; color: #fff; border: none; padding: 10px 20px; cursor: pointer;">
+                                                    Добавить отзыв
+                                                </button>
+                                                {% if reviews.count > 0 %}
+                                                <button id="toggle-comments" style="margin-left: 10px; background-color: #c09578; color: #fff; border: none; padding: 10px 20px; cursor: pointer; border-radius: 50px; margin-right: 10px;">
+                                                    <i id="toggle-icon" class="fa fa-chevron-down"></i> <!-- Стрелка вниз -->
+                                                </button>
+                                                {% endif %}
+                                            
+                                            </div>
+                                            
                                     </div>
-                                    <div class="review_form_wrapper">
+                                    <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const comments = document.querySelectorAll('.comment-item');
+                                        const toggleButton = document.getElementById('toggle-comments');
+                                        const toggleIcon = document.getElementById('toggle-icon');
+                                        let visibleComments = 3;
+                                        let isExpanded = false;
+
+                                        // Проверяем, есть ли кнопка "toggle-comments"
+                                        if (toggleButton) {
+                                            // Показать последние 3 комментариев при загрузке
+                                            function showComments(count) {
+                                                comments.forEach((comment, index) => {
+                                                    if (index < count) {
+                                                        comment.style.display = 'block';
+                                                    }
+                                                });
+                                            }
+
+                                            showComments(visibleComments);
+
+                                            // Обработчик для переключения комментариев
+                                            toggleButton.addEventListener('click', function() {
+                                                if (!isExpanded) {
+                                                    visibleComments += 3; // Увеличить количество видимых комментариев на 3
+                                                    showComments(visibleComments);
+
+                                                    // Если все комментарии показаны, изменить состояние на "скрыть"
+                                                    if (visibleComments >= comments.length) {
+                                                        toggleIcon.classList.remove('fa-chevron-down');
+                                                        toggleIcon.classList.add('fa-chevron-up');
+                                                        isExpanded = true;
+                                                    }
+                                                } else {
+                                                    visibleComments = 3; // Вернуться к отображению только последних 5 комментариев
+                                                    comments.forEach((comment, index) => {
+                                                        if (index >= visibleComments) {
+                                                            comment.style.display = 'none';
+                                                        }
+                                                    });
+
+                                                    // Вернуть состояние на "показать больше"
+                                                    toggleIcon.classList.remove('fa-chevron-up');
+                                                    toggleIcon.classList.add('fa-chevron-down');
+                                                    isExpanded = false;
+                                                }
+                                            });
+                                        } else {
+                                            // Если отзывов 5 или меньше, показываем их сразу
+                                            showComments(comments.length);
+                                        }
+                                    });
+
+
+                                    </script> 
+                                    <style>
+                                    #show-more-comments, #hide-comments {
+                                        background-color: #c09578;
+                                        color: #fff;
+                                        border: none;
+                                        padding: 10px 20px;
+                                        margin-top: 20px;
+                                        cursor: pointer;
+                                        border-radius: 8px;
+                                    }
+                                    
+                                    #show-more-comments:hover, #hide-comments:hover {
+                                        background-color: #a77a5f;
+                                    }
+                                    </style>                                  
+                                    
+                                    <div class="review_form_wrapper" id="review-form-container" style="display: none;">
                                         <div class="review_form">
                                             <div class="comment-respond">
                                                 <form method="POST" class="comment-form-review">
@@ -179,7 +274,7 @@
                                                             Ваш отзыв
                                                             <span class="required">*</span>
                                                         </label>
-                                                        <textarea title="review" id="comment" name="text" cols="45" rows="8" style="border: 2px solid #c09578; border-radius: 10px;" ></textarea>
+                                                        <textarea title="review" id="comment" name="text" cols="45" rows="8" style="border: 2px solid #c09578; border-radius: 10px;"></textarea>
                                                     </p>
                                                     <p class="comment-form-email">
                                                         <label>
@@ -189,15 +284,30 @@
                                                         <input title="email" id="email" name="email" type="email" value="" style="border: 2px solid #c09578; border-radius: 10px;">
                                                     </p>
                                                     <p class="form-submit">
-                                                        <input name="submit" type="submit" name="review_form" id="submit" class="submit" value="Опубликовать" style="border-radius: 8px;">
+                                                        <input name="submit" type="submit" id="submit" class="submit" value="Опубликовать" style="border-radius: 8px;">
                                                     </p>
                                                 </form>
-                                                
                                             </div>
                                         </div>
                                     </div>
+                                    <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const showFormButton = document.getElementById('show-review-form');
+                                        const reviewFormContainer = document.getElementById('review-form-container');
+                                    
+                                        showFormButton.addEventListener('click', function() {
+                                            // Показать форму, если она скрыта, или скрыть, если она видна
+                                            if (reviewFormContainer.style.display === 'none' || reviewFormContainer.style.display === '') {
+                                                reviewFormContainer.style.display = 'block';
+                                                showFormButton.style.display = 'none'; // Скрыть кнопку после показа формы
+                                            } else {
+                                                reviewFormContainer.style.display = 'none';
+                                            }
+                                        });
+                                    });
+                                    </script>                                    
                                 </div>
-                            </div>
+                            <!-- </div> -->
                         </div>
                     </div>
                     <div style="clear: left;"></div>

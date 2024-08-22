@@ -7717,7 +7717,7 @@ body.vertical-menu-open .vertical-menu-overlay {
 	height: 167px;
 	float: left;
 	border-radius: 50%;
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 .testimonial-item .info {
 	display: block;
