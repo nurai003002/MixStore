@@ -62,13 +62,12 @@ from apps.users.models import User
 
 
 class CartItem(models.Model):
-    # product = models.ForeignKey(
-    #     Product, on_delete=models.CASCADE, 
-    #     related_name='cart_products', verbose_name="Товар"
-    # )
-    session_key = models.CharField(max_length=40, null=True, blank=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE,blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,blank=True, null=True)
+    session_key = models.CharField(
+        max_length=40,
+        null=True, blank=True
+    )
     image = ResizedImageField(
         force_format="WEBP", 
         quality=100, 

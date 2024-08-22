@@ -7,8 +7,8 @@
                     <div class="block-search-block">
                         <form class="form-search" action="{% url 'search' %}" method="get" id="searchForm">
                             <div class="form-content">
-                                <div class="inner">
-                                    <input type="text" class="input" name="s" id="searchInput" placeholder="Поиск....">
+                                <div class="inner" style="border-radius: 100px;" >
+                                    <input type="text" class="input" name="s" id="searchInput" placeholder="Поиск...." style="border-radius: 100px;">
                                     <button class="btn-search" type="submit">
                                         <span class="icon-search"></span>
                                     </button>
@@ -67,10 +67,9 @@
                                 border: 1px solid #ccc;
                                 background-color: #fff;
                                 position: absolute;
-                                width: 100%;
+                                width: 63% !important;
                                 z-index: 1000;
                             }
-
                             #searchResults li {
                                 padding: 8px;
                                 cursor: pointer;
@@ -79,7 +78,6 @@
                             #searchResults li:hover {
                                 background-color: #f0f0f0;
                             }
-
                         </style>
                     </div>
                 </div>
@@ -97,6 +95,7 @@
                 </style>
                 <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12 col-ts-12">
                     <div class="header-control">
+                        <a href="{% url 'user_register' %}"><img src="{% static 'assets/images/icon/codicon_account.png' %}" alt=""></a>
                         <div class="block-minicart ysera-mini-cart block-header">
                             <a href="{% url 'cart' %}" class="shopcart-icon">
                                 <img src="{% static 'assets/images/Vector.png' %}" alt="">

@@ -174,7 +174,7 @@
                     <div class="col-lg-7 col-md-7 col-sm-12">
                         <div class="banner">
                             <div class="item-banner style11">
-                                <div class="inner" style="background-image: url('{% static 'assets/images/Group 50.png' %}');">
+                                <div class="inner1" style=" background-image: url('{% static 'assets/images/Group 50.png' %}');" >
                                     <div class="banner-content">
                                         <h4 class="ysera-subtitle">График работы</h4>
                                         <div class="description">
@@ -182,6 +182,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                <style>
+                                    .inner1 {
+                                        height: 305px;
+                                    }
+                                </style>
                             </div>
                         </div>
                     </div>
@@ -194,7 +199,7 @@
                                      {% for review in all_review %}
                                     <div class="testimonial-item">
                                         <div class="image">
-                                            <img src="{{review.image.url}}" alt="img">
+                                            <img src="{{review.image.url}}" alt="img" >
                                         </div>
                                         <div class="info"> 
                                             <h5 class="name">

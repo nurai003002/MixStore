@@ -79,12 +79,18 @@
                             <form id="registrationForm" class="register" method="POST" action="">
                                 {% csrf_token %}
                                 <p class="form-row form-row-wide">
-                                    <label class="text">Почта</label>
-                                    <input title="email" name="email" type="email" class="input-text">
+                                    <label class="text">Имя пользователя</label>
+                                    <input id="username" title="username" name="username" type="text" class="input-text">
+                                    {% if errors.username %}
+                                        <div id="usernameError" style="color: red;">{{ errors.username }}</div>
+                                    {% endif %}
                                 </p>
                                 <p class="form-row form-row-wide">
-                                    <label class="text">Имя пользователя</label>
-                                    <input title="username" name="username" type="text" class="input-text">
+                                    <label class="text">Почта</label>
+                                    <input id="email" title="email" name="email" type="email" class="input-text">
+                                    {% if email and errors.email %}
+                                        <div id="emailError" style="color: red;">{{ errors.email }}</div>
+                                    {% endif %}
                                 </p>
                                 <p class="form-row form-row-wide">
                                     <label class="text">Пароль</label>
@@ -94,6 +100,9 @@
                                             <i class="fa fa-eye"></i>
                                         </button>
                                     </div>
+                                    {% if errors.password %}
+                                        <div id="passwordMismatchError" style="color: red;">{{ errors.password }}</div>
+                                    {% endif %}
                                 </p>
                                 <p class="form-row form-row-wide">
                                     <label class="text">Повторите пароль</label>
@@ -119,12 +128,12 @@
                                             icon.classList.add('fa-eye');
                                         }
                                     }
-            
+                        
                                     document.getElementById('registrationForm').addEventListener('submit', function(event) {
                                         var password = document.getElementById('password').value;
                                         var confirmPassword = document.getElementById('confirm_password').value;
                                         var error = document.getElementById('passwordError');
-            
+                        
                                         if (password.length < 8 || password !== confirmPassword) {
                                             error.style.display = 'inline';
                                             event.preventDefault(); // предотвратить отправку формы
@@ -132,15 +141,46 @@
                                             error.style.display = 'none';
                                         }
                                     });
+                        
+                                    // Удаление ошибок при вводе данных
+                                    document.getElementById('username').addEventListener('input', function() {
+                                        var usernameError = document.getElementById('usernameError');
+                                        if (usernameError) {
+                                            usernameError.style.display = 'none';
+                                        }
+                                    });
+                        
+                                    document.getElementById('email').addEventListener('input', function() {
+                                        var emailError = document.getElementById('emailError');
+                                        if (emailError) {
+                                            emailError.style.display = 'none';
+                                        }
+                                    });
+                        
+                                    document.getElementById('password').addEventListener('input', function() {
+                                        var passwordMismatchError = document.getElementById('passwordMismatchError');
+                                        if (passwordMismatchError) {
+                                            passwordMismatchError.style.display = 'none';
+                                        }
+                                    });
+                        
+                                    document.getElementById('confirm_password').addEventListener('input', function() {
+                                        var passwordMismatchError = document.getElementById('passwordMismatchError');
+                                        if (passwordMismatchError) {
+                                            passwordMismatchError.style.display = 'none';
+                                        }
+                                    });
                                 </script>
                                 <p class="form-row">
-                                    <a href="{% url 'user_login' %}" class="label-text">Уже есть аккаунт</a>
+                                    <a href="{% url 'user_login' %}" class="label-text">Уже есть аккаунт?</a>
                                 </p>
                                 <p>
                                     <input type="submit" name="register_button" class="button-submit" value="Зарегистрироваться">
                                 </p>
                             </form>
                         </div>
+                        
+                        
                     </div>
                 </div>
             </div>
