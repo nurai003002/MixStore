@@ -1,6 +1,9 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.core.mail import send_mail, BadHeaderError
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 from apps.settings.models import Setting
 from apps.products.models import Product, Category
@@ -119,14 +122,19 @@ def remove_from_cart(request, cart_item_id):
     return redirect('cart')
 
 
-def update_cart_item(request, product_id):
-    if request.method == 'POST':
-        cart_item = get_object_or_404(CartItem, product_id=product_id, user=request.user)
-        quantity = int(request.POST.get('quantity', 1))
-        if quantity > 0:
+@require_POST
+def update_cart_quantity(request):
+    data = json.loads(request.body)
+    product_id = data.get('product_id')
+    quantity = data.get('quantity')
+
+    if product_id and quantity:
+        try:
+            cart_item = CartItem.objects.get(id=product_id)
             cart_item.quantity = quantity
             cart_item.save()
-        else:
-            cart_item.delete()
-        
-    return redirect('cart')
+
+            return JsonResponse({'success': True, 'price': cart_item.product.price})
+        except CartItem.DoesNotExist:
+            return JsonResponse({'success': False}, status=404)
+    return JsonResponse({'success': False}, status=400)

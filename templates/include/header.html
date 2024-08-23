@@ -95,7 +95,55 @@
                 </style>
                 <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12 col-ts-12">
                     <div class="header-control">
-                        <a href="{% url 'user_register' %}"><img src="{% static 'assets/images/icon/codicon_account.png' %}" alt=""></a>
+                        <div class="dropdown">
+                                <img src="{% static 'assets/images/icon/codicon_account.png' %}" alt="">
+                            <div class="dropdown-content">
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'user_logout' %}">Выйти</a>
+                                {% else %}
+                                    <a href="{% url 'user_login' %}">Войти</a>
+                                    <a href="{% url 'user_register' %}">Регистрация</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <style>
+                            .dropdown {
+                                position: relative;
+                                display: inline-block;
+                            }
+                            
+                            /* Скрытое содержимое дропдауна */
+                            .dropdown-content {
+                                display: none;
+                                position: absolute;
+                                background-color: white;
+                                min-width: 160px;
+                                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                                z-index: 1;
+                                border-radius: 10px;
+                                text-align: left; /* Выровнять текст по левому краю */
+                            }
+                            
+                            /* Стили для ссылок внутри дропдауна */
+                            .dropdown-content a {
+                                color: black;
+                                padding: 12px 16px;
+                                text-decoration: none;
+                                display: block;
+                                text-align: left; /* Выровнять текст по левому краю */
+                            }
+                            
+                            /* Стиль при наведении на ссылки внутри дропдауна */
+                            .dropdown-content a:hover {
+                                background-color: #c09578;
+                                border-radius: 10px;
+                            }
+                            
+                            /* Показ содержимого при наведении на дропдаун */
+                            .dropdown:hover .dropdown-content {
+                                display: block;
+                            }
+                            </style>                   
                         <div class="block-minicart ysera-mini-cart block-header">
                             <a href="{% url 'cart' %}" class="shopcart-icon">
                                 <img src="{% static 'assets/images/Vector.png' %}" alt="">

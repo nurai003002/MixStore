@@ -14,7 +14,7 @@
 								<a href="{% url 'index' %}">Главная страница</a>
 							</li>
 							<li class="trail-item trail-end active">
-								Аутентификация
+								Войти
 							</li>
 						</ul>
 					</div>
@@ -24,7 +24,7 @@
 				<div class="content-area col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="site-main">
 						<h3 class="custom_blog_title">
-							Аутентификация
+							Войти
 						</h3>
 						<div class="customer_login">
 							<div class="row">
@@ -53,6 +53,42 @@
 											</p>
 										</form>
 									</div>
+									<script>document.addEventListener('DOMContentLoaded', function () {
+										const form = document.querySelector('.login');
+										const errorMessage = document.createElement('div');
+										errorMessage.style.color = 'red';
+										form.appendChild(errorMessage);
+									
+										form.addEventListener('submit', function (event) {
+											event.preventDefault(); // Предотвращаем отправку формы
+									
+											const formData = new FormData(form);
+											const csrfToken = formData.get('csrfmiddlewaretoken');
+									
+											fetch(form.action, {
+												method: 'POST',
+												headers: {
+													'X-CSRFToken': csrfToken,
+												},
+												body: formData
+											})
+											.then(response => response.json()) // Здесь используем .json() для обработки JSON-ответа
+											.then(data => {
+												if (data.success) {
+													window.location.href = data.redirect_url || '/'; // Перенаправление после успешного входа
+												} else {
+													errorMessage.innerText = data.error || 'Неправильное имя пользователя или пароль';
+													errorMessage.style.display = 'block';
+												}
+											})
+											.catch(error => {
+												errorMessage.innerText = 'Произошла ошибка при попытке входа. Пожалуйста, попробуйте еще раз.';
+												console.error('Ошибка:', error);
+											});
+										});
+									});
+									
+									</script>
 								</div>
 							</div>
 						</div>
