@@ -160,34 +160,37 @@ def register(request):
     return render(request, 'user/register.html', locals())
 
 def login1(request):
-    setting = Setting.objects.latest('id')
     cart_items = CartItem.objects.all()
     cart_items_count = cart_items.count()
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-    if request.method == "POST":
-        if 'login_button' in request.POST:
-            username = request.POST.get('username')
-            password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'success': True, 'redirect_url': '/'})  # Перенаправление после успешного логина
+        else:
+            return JsonResponse({'success': False, 'error': 'Неправильное имя пользователя или пароль'})
 
-            user = authenticate(request, username=username, password=password)
 
-            if user is not None:
-                if user.is_active:  # Убедитесь, что пользователь активен
-                    login(request, user)
-                    return redirect('/')
-                else:
-                    messages.error(request, 'Ваш аккаунт не активен.')
-            else:
-                messages.error(request, 'Неправильное имя пользователя или пароль.')
     
     return render(request, 'user/login.html', locals())
+
 
 def user_logout(request):
     logout(request)
     return redirect('/')
+
 
 def confirm(request):
     setting = Setting.objects.latest('id')
     cart_items = CartItem.objects.all()
     cart_items_count = cart_items.count()
     return render(request, 'user/confirm.html', locals())
+
+def forgot_password(request):
+    setting = Setting.objects.latest('id')
+    cart_items = CartItem.objects.all()
+    cart_items_count = cart_items.count()
+    return render(request, 'user/forgot_password.html', locals())

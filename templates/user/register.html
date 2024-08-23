@@ -172,8 +172,10 @@
                                     });
                                 </script>
                                 <p class="form-row">
-                                    <a href="{% url 'user_login' %}" class="label-text">Уже есть аккаунт?</a>
+                                    <span class="label-text" style="display: inline-block;">Уже есть аккаунт?</span>
+                                    <a href="{% url 'user_login' %}" class="label-text" style="display: inline-block; margin-left: 5px;">Войти</a>
                                 </p>
+                                
                                 <p>
                                     <input type="submit" name="register_button" class="button-submit" value="Зарегистрироваться">
                                 </p>
