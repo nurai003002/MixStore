@@ -46,10 +46,10 @@
 													<input type="checkbox" id="cb1">
 													<label for="cb1" class="label-text">Запомнить меня</label>
 												</span>
-												<a href="#" class="forgot-pw">Забыли пароль?</a>
+												<a href="{% url 'forgot_password' %}" class="forgot-pw">Забыли пароль?</a>
 											</p>
 											<p class="form-row">
-												<input type="submit" name='login_button' class="button-submit" value="Войти">
+												<input type="submit" name='login_button' class="button-submit" value="Войти" style="border-radius: 100px;">
 											</p>
 										</form>
 									</div>
