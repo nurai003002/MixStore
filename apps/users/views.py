@@ -269,25 +269,25 @@ def forgot_password(request):
     cart_items = CartItem.objects.all()
     cart_items_count = cart_items.count()
     if request.method == 'POST':
-        # if 'email_send' in request.POST:
-        #     email = request.POST.get('email')
-        #     try:
-        #         # Сохранение email в базе данных
-        #         Subscribe.objects.create(email=email)
+        if 'email_send' in request.POST:
+            email = request.POST.get('email')
+            try:
+                # Сохранение email в базе данных
+                Subscribe.objects.create(email=email)
                 
-        #         # Отправка письма
-        #         send_mail(
-        #             'Подписка на рассылку',  # Subject
-        #             f'Ваша почта: {email}\nСпасибо за подписку!',  # Message
-        #             'noreply@somehost.local',  # From email
-        #             [email],  # To email
-        #             fail_silently=False,
-        #         )
-        #         return redirect('forgot_password')
-        #     except BadHeaderError:
-        #         return JsonResponse({'error': 'Invalid header found.'}, status=500)
-        #     except ConnectionRefusedError as e:
-        #         return JsonResponse({'error': f'Connection refused: {e}'}, status=500)
+                # Отправка письма
+                send_mail(
+                    'Подписка на рассылку',  # Subject
+                    f'Ваша почта: {email}\nСпасибо за подписку!',  # Message
+                    'noreply@somehost.local',  # From email
+                    [email],  # To email
+                    fail_silently=False,
+                )
+                return redirect('forgot_password')
+            except BadHeaderError:
+                return JsonResponse({'error': 'Invalid header found.'}, status=500)
+            except ConnectionRefusedError as e:
+                return JsonResponse({'error': f'Connection refused: {e}'}, status=500)
     
         if 'send_code' in request.POST:
             email_form = EmailForm(request.POST)
@@ -303,10 +303,10 @@ def forgot_password(request):
                         'Сброс пароля',
                         f'Ваш код для сброса пароля: {code}',
                         'noreply@somehost.local', 
-                        [email],
+                        ['nuraj9663@gmail.com'],
                         fail_silently=False,
                     )
-                    redirect('forgot_password')
+                    redirect('reset_password')
                     messages.success(request, 'Код был отправлен на вашу почту.')
                 except User.DoesNotExist:
                     messages.error(request, 'Пользователь с таким email не найден.')
@@ -340,7 +340,7 @@ def reset_password(request):
                 return JsonResponse({'error': 'Invalid header found.'}, status=500)
             except ConnectionRefusedError as e:
                 return JsonResponse({'error': f'Connection refused: {e}'}, status=500)
-        if 'reset_password' in request.POST:  # Это означает, что была отправлена вторая форма
+        if 'reset_password' in request.POST:  # Это означает, что была отправлена форма сброса пароля
             form = ResetPasswordForm(request.POST)
             if form.is_valid():
                 code = form.cleaned_data['code']
@@ -354,8 +354,15 @@ def reset_password(request):
                             user = User.objects.get(email=email)
                             user.set_password(new_password)
                             user.save()
-                            messages.success(request, 'Пароль успешно изменен.')
-                            return redirect('login')  # Перенаправление на страницу входа
+
+                            # Автоматический вход пользователя
+                            user = authenticate(request, username=user.username, new_password=new_password)
+                            if user is not None:
+                                login(request, user)
+                                messages.success(request, 'Пароль успешно изменен.')
+                                return redirect('index')  # Перенаправление на главную страницу
+                            else:
+                                messages.error(request, 'Не удалось войти. Попробуйте еще раз.')
                         except User.DoesNotExist:
                             messages.error(request, 'Произошла ошибка. Попробуйте еще раз.')
                     else:
