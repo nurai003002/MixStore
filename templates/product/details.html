@@ -141,7 +141,8 @@
                             </li>
                         </ul>
                         <div class="tab-container">
-                            <!-- <div id="reviews" class="tab-panel"> -->
+
+                            {% if user.is_authenticated %}
                                 <div class="reviews-tab">
                                     <div class="comments">
                                         <h2 class="reviews-title">
@@ -307,7 +308,11 @@
                                     });
                                     </script>                                    
                                 </div>
-                            <!-- </div> -->
+                                {% else %}
+                                <p class="reviews-title">
+                                    <a href="{% url 'user_register' %}">Зарегистрируйтесь чтобы оставить отзыв</a>
+                                </p>
+                                {% endif %}
                         </div>
                     </div>
                     <div style="clear: left;"></div>

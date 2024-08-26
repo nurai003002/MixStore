@@ -1,14 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate as auth_login
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail,BadHeaderError
-from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import logout
-from apps.telegram_bot.views import get_text
 from django.contrib.auth.decorators import login_required
-import requests, random
+import requests
 from django.views.decorators.csrf import csrf_exempt
 from decimal import Decimal
 
@@ -18,7 +15,6 @@ from apps.products.models import Product, Category
 from apps.users.models import User
 from apps.billings.models import Billings, BillingProduct
 from apps.secondary.models import Subscribe
-from apps.users.forms import EmailForm, ResetPasswordForm
 
 # Create your views here.
 @login_required(login_url='/user/register/') 
@@ -263,113 +259,3 @@ def confirm(request):
     cart_items = CartItem.objects.all()
     cart_items_count = cart_items.count()
     return render(request, 'user/confirm.html', locals())
-
-def forgot_password(request):
-    setting = Setting.objects.latest('id')
-    cart_items = CartItem.objects.all()
-    cart_items_count = cart_items.count()
-    if request.method == 'POST':
-        if 'email_send' in request.POST:
-            email = request.POST.get('email')
-            try:
-                # Сохранение email в базе данных
-                Subscribe.objects.create(email=email)
-                
-                # Отправка письма
-                send_mail(
-                    'Подписка на рассылку',  # Subject
-                    f'Ваша почта: {email}\nСпасибо за подписку!',  # Message
-                    'noreply@somehost.local',  # From email
-                    [email],  # To email
-                    fail_silently=False,
-                )
-                return redirect('forgot_password')
-            except BadHeaderError:
-                return JsonResponse({'error': 'Invalid header found.'}, status=500)
-            except ConnectionRefusedError as e:
-                return JsonResponse({'error': f'Connection refused: {e}'}, status=500)
-    
-        if 'send_code' in request.POST:
-            email_form = EmailForm(request.POST)
-            if email_form.is_valid():
-                email = email_form.cleaned_data['email']
-                try:
-                    user = User.objects.get(email=email)
-                    code = str(random.randint(100000, 999999))
-                    request.session['reset_code'] = code
-                    request.session['reset_email'] = email
-
-                    send_mail(
-                        'Сброс пароля',
-                        f'Ваш код для сброса пароля: {code}',
-                        'noreply@somehost.local', 
-                        ['nuraj9663@gmail.com'],
-                        fail_silently=False,
-                    )
-                    redirect('reset_password')
-                    messages.success(request, 'Код был отправлен на вашу почту.')
-                except User.DoesNotExist:
-                    messages.error(request, 'Пользователь с таким email не найден.')
-            else:
-                messages.error(request, 'Пожалуйста, введите корректный email.')
-
-    return render(request, 'user/forgot_password.html', locals())
-
-
-def reset_password(request):
-    setting = Setting.objects.latest('id')
-    cart_items = CartItem.objects.all()
-    cart_items_count = cart_items.count()
-    if request.method == 'POST':
-        if 'email_send' in request.POST:
-            email = request.POST.get('email')
-            try:
-                # Сохранение email в базе данных
-                Subscribe.objects.create(email=email)
-                
-                # Отправка письма
-                send_mail(
-                    'Подписка на рассылку',  # Subject
-                    f'Ваша почта: {email}\nСпасибо за подписку!',  # Message
-                    'noreply@somehost.local',  # From email
-                    [email],  # To email
-                    fail_silently=False,
-                )
-                return redirect('reset_password')
-            except BadHeaderError:
-                return JsonResponse({'error': 'Invalid header found.'}, status=500)
-            except ConnectionRefusedError as e:
-                return JsonResponse({'error': f'Connection refused: {e}'}, status=500)
-        if 'reset_password' in request.POST:  # Это означает, что была отправлена форма сброса пароля
-            form = ResetPasswordForm(request.POST)
-            if form.is_valid():
-                code = form.cleaned_data['code']
-                new_password = form.cleaned_data['new_password']
-                confirm_password = form.cleaned_data['confirm_password']
-
-                if code == request.session.get('reset_code'):
-                    if new_password == confirm_password:
-                        try:
-                            email = request.session.get('reset_email')
-                            user = User.objects.get(email=email)
-                            user.set_password(new_password)
-                            user.save()
-
-                            # Автоматический вход пользователя
-                            user = authenticate(request, username=user.username, new_password=new_password)
-                            if user is not None:
-                                login(request, user)
-                                messages.success(request, 'Пароль успешно изменен.')
-                                return redirect('index')  # Перенаправление на главную страницу
-                            else:
-                                messages.error(request, 'Не удалось войти. Попробуйте еще раз.')
-                        except User.DoesNotExist:
-                            messages.error(request, 'Произошла ошибка. Попробуйте еще раз.')
-                    else:
-                        messages.error(request, 'Пароли не совпадают.')
-                else:
-                    messages.error(request, 'Неверный код.')
-            else:
-                messages.error(request, 'Пожалуйста, заполните все поля.')
-
-    return render(request, 'user/reset_password.html', locals())
