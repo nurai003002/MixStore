@@ -207,7 +207,6 @@ def register(request):
             user.password = make_password(password)
             user.save()
 
-            # Автоматический вход пользователя после регистрации
             login(request, user)
 
             return redirect('index')
