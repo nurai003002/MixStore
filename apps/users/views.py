@@ -284,5 +284,14 @@ def subscribe(request):
 def confirm(request):
     setting = Setting.objects.latest('id')
     cart_items = CartItem.objects.all()
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        # Если пользователь не аутентифицирован, корзина привязывается к сессии
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+        cart_items = CartItem.objects.filter(session_key=session_key)
+    
     cart_items_count = cart_items.count()
     return render(request, 'user/confirm.html', locals())
