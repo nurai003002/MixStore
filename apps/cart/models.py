@@ -2,7 +2,8 @@ from django.db import models
 from django_resized.forms import ResizedImageField
 
 from apps.products.models import Product
-from apps.users.models import User
+# from apps.users.models import User
+from django.contrib.auth import get_user_model
 # Create your models here.
 # class Cart(models.Model):
 #     image = ResizedImageField(
@@ -60,6 +61,7 @@ from apps.users.models import User
 #         verbose_name = 'Корзина'
 #         verbose_name_plural = 'Корзина'
 
+User = get_user_model()
 
 class CartItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True, null=True)

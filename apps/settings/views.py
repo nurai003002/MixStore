@@ -16,6 +16,15 @@ def index(request):
     category = Category.objects.all().order_by('-id')[:3]
     categories = Category.objects.all()
     cart_items = CartItem.objects.all()  
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        # Если пользователь не аутентифицирован, корзина привязывается к сессии
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+        cart_items = CartItem.objects.filter(session_key=session_key)
+    
     cart_items_count = cart_items.count()
     product_new = Product.objects.all().order_by('id')[:8]
     product_trand =  Product.objects.all()[:6]
@@ -49,6 +58,15 @@ def contact(request):
     slider = Slider.objects.all()
     service = Service.objects.latest('id')
     cart_items = CartItem.objects.all()  
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        # Если пользователь не аутентифицирован, корзина привязывается к сессии
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+        cart_items = CartItem.objects.filter(session_key=session_key)
+    
     cart_items_count = cart_items.count()
     categories = Category.objects.all()
     team = Team.objects.all()

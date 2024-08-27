@@ -16,10 +16,20 @@ def cart(request):
     setting = Setting.objects.latest('id')
     products = Product.objects.all()
     categories = Category.objects.all()
-    cart_items = CartItem.objects.all()
+    
+    # Фильтруем товары в корзине по текущему пользователю
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        # Если пользователь не аутентифицирован, корзина привязывается к сессии
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+        cart_items = CartItem.objects.filter(session_key=session_key)
+    
     cart_items_count = cart_items.count()
     delivery_cost = 250
-    total_price = sum([cart_items.total for cart_items in cart_items])
+    total_price = sum([item.total for item in cart_items])
     if total_price < 15000:
         total_price += delivery_cost  # Добавляем стоимость доставки, если сумма заказа меньше 1500 сом
     else:
@@ -46,7 +56,6 @@ def cart(request):
             except ConnectionRefusedError as e:
                 return JsonResponse({'error': f'Connection refused: {e}'}, status=500)
     
-
     return render(request, 'cart/cart.html', locals())
 
 

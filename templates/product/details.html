@@ -55,7 +55,7 @@
                             {% if product_detail.status %}
                             <div class="availability">
                                 Статус:
-                                <a href="#">{{product_detail.status}}</a>
+                                <a >{{product_detail.status}}</a>
                             </div>
                             {% endif %}
                             <div class="price">
@@ -95,10 +95,17 @@
                                             <a class="btn-number qtyplus">+</a>
                                         </div>
                                     </div>
-                                    {% if product_detail.status != 'нет в наличии' %}
-                                    <a href="#" id="add-to-cart-btn" class="single_add_to_cart_button button">В корзину</a>
+                                    {% if user.is_authenticated %}
+                                        {% if product_detail.status != 'нет в наличии' %}
+                                        <a href="#" id="add-to-cart-btn" class="single_add_to_cart_button button">В корзину</a>
+                                        {% else %}
+                                        <p class="out-of-stock-text">Товар временно недоступен</p>
+                                        {% endif %}
                                     {% else %}
-                                    <p class="out-of-stock-text">Товар временно недоступен</p>
+                                    <p class="registration-required">
+                                        <a href="{% url 'user_register' %}">Зарегистрируйтесь</a> чтобы добавить в корзину
+                                    </p>
+                                    
                                     {% endif %}
                                 </div>
                             </div>

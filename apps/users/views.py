@@ -24,6 +24,15 @@ def checkout(request):
     categories = Category.objects.all()
     cart_items = CartItem.objects.all()
 
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        # Если пользователь не аутентифицирован, корзина привязывается к сессии
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+        cart_items = CartItem.objects.filter(session_key=session_key)
+    
     cart_items_count = cart_items.count()
     if 'email_send' in request.POST:
             email = request.POST.get('email')
@@ -141,6 +150,15 @@ def send_telegram_message(message):
 def register(request):
     setting = Setting.objects.latest('id')
     cart_items = CartItem.objects.all()
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        # Если пользователь не аутентифицирован, корзина привязывается к сессии
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+        cart_items = CartItem.objects.filter(session_key=session_key)
+    
     cart_items_count = cart_items.count()
     if 'email_send' in request.POST:
             email = request.POST.get('email')
@@ -202,6 +220,16 @@ def register(request):
 def login1(request):
     setting = Setting.objects.latest('id')
     cart_items = CartItem.objects.all()
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        # Если пользователь не аутентифицирован, корзина привязывается к сессии
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+        cart_items = CartItem.objects.filter(session_key=session_key)
+    
+    cart_items_count = cart_items.count()
     if 'email_send' in request.POST:
             email = request.POST.get('email')
             try:
@@ -221,7 +249,6 @@ def login1(request):
                 return JsonResponse({'error': 'Invalid header found.'}, status=500)
             except ConnectionRefusedError as e:
                 return JsonResponse({'error': f'Connection refused: {e}'}, status=500)
-    cart_items_count = cart_items.count()
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')

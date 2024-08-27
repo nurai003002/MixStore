@@ -18,6 +18,15 @@ def product(request):
     
     categories = Category.objects.all()
     cart_items = CartItem.objects.all()
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        # Если пользователь не аутентифицирован, корзина привязывается к сессии
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+        cart_items = CartItem.objects.filter(session_key=session_key)
+    
     cart_items_count = cart_items.count()
     paginator = Paginator(products, 12)  
 
@@ -63,6 +72,15 @@ def product_detail(request, id):
     random_products = Product.objects.all().order_by('?')[:5]
     categories = Category.objects.all()
     cart_items = CartItem.objects.all()  
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        # Если пользователь не аутентифицирован, корзина привязывается к сессии
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+        cart_items = CartItem.objects.filter(session_key=session_key)
+    
     cart_items_count = cart_items.count()
     product_detail = get_object_or_404(Product, id=id)
     reviews = ProductReview.objects.filter(product=id).order_by('-created_at')
