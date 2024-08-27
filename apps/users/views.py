@@ -179,8 +179,8 @@ def register(request):
                 return JsonResponse({'error': 'Invalid header found.'}, status=500)
             except ConnectionRefusedError as e:
                 return JsonResponse({'error': f'Connection refused: {e}'}, status=500)
+    
     if request.method == "POST":
-        if 'register_button' in request.POST:
             username = request.POST.get('username')
             email = request.POST.get('email')
             password = request.POST.get('password')
@@ -188,33 +188,29 @@ def register(request):
 
             errors = {}
 
-            # Проверка на заполнение всех полей
             if not username or not email or not password:
-                errors['fields'] = 'All fields must be filled.'
+                errors['fields'] = 'Все поля должны быть заполнены.'
 
-            # Проверка совпадения паролей
             if password != confirm_password:
-                errors['password'] = 'Passwords must match.'
+                errors['password'] = 'Пароли должны совпадать.'
 
-            # Проверка уникальности имени пользователя
             if User.objects.filter(username=username).exists():
                 errors['username'] = 'Имя пользователя уже занято, выберите другое.'
 
-            # Проверка уникальности email
             if User.objects.filter(email=email).exists():
                 errors['email'] = 'Email уже занят, введите другой.'
 
-            # Если есть ошибки, возвращаем форму с ошибками
             if errors:
-                return render(request, 'user/register.html', locals())  
+                return render(request, 'user/register.html', {'errors': errors})
 
-            # Создание нового пользователя
             user = User(username=username, email=email)
             user.password = make_password(password)
             user.save()
 
-            # Перенаправление на главную страницу после успешной регистрации
-            return redirect('index') 
+            # Автоматический вход пользователя после регистрации
+            login(request, user)
+
+            return redirect('index')
     return render(request, 'user/register.html', locals())
 
 def login1(request):

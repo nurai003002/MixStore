@@ -80,14 +80,14 @@
                                 {% csrf_token %}
                                 <p class="form-row form-row-wide">
                                     <label class="text">Имя пользователя</label>
-                                    <input id="username" title="username" name="username" type="text" class="input-text">
+                                    <input id="username" name="username" type="text" class="input-text">
                                     {% if errors.username %}
                                         <div id="usernameError" style="color: red;">{{ errors.username }}</div>
                                     {% endif %}
                                 </p>
                                 <p class="form-row form-row-wide">
                                     <label class="text">Почта</label>
-                                    <input id="email" title="email" name="email" type="email" class="input-text">
+                                    <input id="email" name="email" type="email" class="input-text">
                                     {% if email and errors.email %}
                                         <div id="emailError" style="color: red;">{{ errors.email }}</div>
                                     {% endif %}
@@ -95,7 +95,7 @@
                                 <p class="form-row form-row-wide">
                                     <label class="text">Пароль</label>
                                     <div class="password-container">
-                                        <input id="password" title="password" name="password" type="password" class="input-text">
+                                        <input id="password" name="password" type="password" class="input-text">
                                         <button type="button" class="toggle-password" onclick="togglePassword('password')">
                                             <i class="fa fa-eye"></i>
                                         </button>
@@ -175,7 +175,6 @@
                                     <span class="label-text" style="display: inline-block;">Уже есть аккаунт?</span>
                                     <a href="{% url 'user_login' %}" class="label-text" style="display: inline-block; margin-left: 5px;">Войти</a>
                                 </p>
-                                
                                 <p>
                                     <input type="submit" name="register_button" class="button-submit" value="Зарегистрироваться">
                                 </p>
