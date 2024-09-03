@@ -25,8 +25,12 @@
                     <div class="details-product">
                         <div class="details-thumd">
                             <div class="image-preview-container image-thick-box image_preview_container">
+                                {% if product_detail.image != "no_image.jpg" %}
                                 <img id="img_zoom" data-zoom-image="{{product_detail.image.url}}"
                                      src="{{product_detail.image.url}}" alt="img">
+                                {% else %}
+                                    <img src="{% static 'assets/images/icon/default.png' %}" alt="Default Image">
+                                {% endif %}
                                 <a href="#" class="btn-zoom open_qv"><i class="fa fa-search" aria-hidden="true"></i></a>
                             </div>
                             <div class="product-preview image-small product_preview">
@@ -35,8 +39,12 @@
                                      data-responsive='{"0":{"items":3},"480":{"items":3},"600":{"items":3},"1000":{"items":3}}'>
                                     <a href="#" data-image="{{product_detail.image.url}}"
                                        data-zoom-image="{{product_detail.image.url}}" class="active">
+                                       {% if product_detail.image != "no_image.jpg" %}
                                         <img src="{{product_detail.image.url}}"
                                              data-large-image="{{product_detail.image.url}}" alt="img">
+                                        {% else %}
+                                             <img src="{% static 'assets/images/icon/default.png' %}" alt="Default Image">
+                                         {% endif %}
                                     </a>
                                     {% for product in product_detail.product_image.all %}
                                     <a href="#" data-image="{{product.image.url}}"
@@ -70,20 +78,24 @@
                             </div>
                             <div class="variations">
                                 <div class="attribute attribute_color">
+                                    {% if product_detail.color %}
                                     <div class="color-text text-attribute">
                                         Цвета:
                                     </div>
                                     <div class="list-color list-item">
                                         <p>{{product_detail.color}}</p>
                                     </div>
+                                    {% endif %}
                                 </div>
                                 <div class="attribute attribute_size">
+                                    {% if product_detail.size %}
                                     <div class="size-text text-attribute">
                                         Размеры:
                                     </div>
                                     <div class="list-size list-item">
                                         <p class="">{{product_detail.size}}</p>
                                     </div>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="group-button">

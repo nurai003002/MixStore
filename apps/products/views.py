@@ -122,6 +122,20 @@ def product_detail(request, id):
 
 
 def product_list(request, category_id=None):
+    setting = Setting.objects.latest('id')
+    products = Product.objects.all()
+    random_products = Product.objects.all().order_by('?')[:5]
+    categories = Category.objects.all()
+    cart_items = CartItem.objects.all()  
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        # Если пользователь не аутентифицирован, корзина привязывается к сессии
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+        cart_items = CartItem.objects.filter(session_key=session_key)
+    cart_items_count = cart_items.count()
     categories = Category.objects.all()
     if category_id:
         products = Product.objects.filter(category_id=category_id).order_by('-id')
@@ -159,4 +173,20 @@ def search(request):
             })
 
         return JsonResponse({'results': results})
+    return render(request, 'product/products.html', locals())
+
+def category(request, id):
+    setting = Setting.objects.latest('id')
+    products = Product.objects.all()
+    random_products = Product.objects.all().order_by('?')[:5]
+    categories = Category.objects.all()
+    cart_items = CartItem.objects.all()  
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        # Если пользователь не аутентифицирован, корзина привязывается к сессии
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+        cart_items = CartItem.objects.filter(session_key=session_key)
     return render(request, 'product/products.html', locals())

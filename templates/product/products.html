@@ -110,7 +110,11 @@
 									<div class="product-thumb">
 										<div class="thumb-inner">
 											<a href="{% url 'product_detail' product.id %}">
-												<img src="{{ product.image.url }}" alt="img">
+												{% if product.image != "no_image.jpg" %}
+                                                    <img src="{{ product.image.url }}">
+                                                {% else %}
+                                                    <img src="{% static 'assets/images/icon/default.png' %}" alt="Default Image">
+                                                {% endif %}
 											</a>
 										</div>
 									</div>

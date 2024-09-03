@@ -123,7 +123,8 @@
                                 }
                             };
                         });
-                        </script>               -->
+                        </script>   
+                                -->
                     </div>
                 </div>
                 <div class="box-footer col-xs-12 col-sm-4 col-md-4 col-lg-4">
@@ -158,8 +159,56 @@
                     }
                 
                 </style>
+                <style>@media (min-width: 768px) {
+                    .container-wapper .row {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                        flex-wrap: nowrap; /* Убираем перенос, чтобы элементы оставались в одной строке */
+                    }
+                
+                    .box-footer {
+                        flex: 1; /* Устанавливаем равное распределение для всех блоков */
+                        margin-bottom: 0; /* Убираем отступ снизу, чтобы элементы выровнялись по одной линии */
+                        padding: 0 15px; /* Добавляем отступы для внутреннего содержимого */
+                    }
+                
+                    .ysera-custommenu,
+                    .ysera-newsletter {
+                        text-align: left;
+                        margin-bottom: 0;
+                    }
+                
+                    .ysera-newsletter .newsletter-form-wrap {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        width: 100%; /* Полная ширина для формы */
+                    }
+                
+                    .ysera-newsletter .newsletter-form-wrap input {
+                        margin-bottom: 10px;
+                        width: 100%;
+                    }
+                
+                    .ysera-socials {
+                        text-align: center;
+                        margin-top: 20px;
+                    }
+                
+                    .coppyright {
+                        text-align: center;
+                        margin-top: 10px;
+                    }
+                    
+                    .ysera-custommenu img {
+                        max-width: 100%;
+                        height: auto;
+                    }
+                }
+                </style>
             </div>
-            <div class="footer-end">
+            <!-- <div class="footer-end">
                 <div class="row">
                     <div class="col-sm-12 col-xs-12">
                         <div class="ysera-socials">
@@ -189,7 +238,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </footer>
