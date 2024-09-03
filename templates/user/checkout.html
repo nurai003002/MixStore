@@ -132,7 +132,11 @@
                                     {% for cart_product in cart_items %}
                                     <li class="product-item-order" id="order-item-{{cart_product.id}}">
                                         <div class="product-thumb">
-                                            <img src="{{cart_product.image.url}}" alt="img">
+                                            {% if cart_product.image != "no_image.jpg" %}
+                                                <img src="{{cart_product.image.url}}" alt="img">
+                                            {% else %}
+                                                <img src="{% static 'assets/images/icon/default.png' %}" alt="Default Image">
+                                            {% endif %}
                                         </div>
                                         <div class="product-order-inner">
                                             <h5 class="product-name">
