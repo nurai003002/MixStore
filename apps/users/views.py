@@ -27,7 +27,6 @@ def checkout(request):
     if request.user.is_authenticated:
         cart_items = CartItem.objects.filter(user=request.user)
     else:
-        # Если пользователь не аутентифицирован, корзина привязывается к сессии
         session_key = request.session.session_key
         if not session_key:
             request.session.create()
@@ -37,15 +36,13 @@ def checkout(request):
     if 'email_send' in request.POST:
             email = request.POST.get('email')
             try:
-                # Сохранение email в базе данных
                 Subscribe.objects.create(email=email)
                 
-                # Отправка письма
                 send_mail(
-                    'Подписка на рассылку',  # Subject
-                    f'Ваша почта: {email}\nСпасибо за подписку!',  # Message
-                    'noreply@somehost.local',  # From email
-                    [email],  # To email
+                    'Подписка на рассылку',  
+                    f'Ваша почта: {email}\nСпасибо за подписку!', 
+                    'noreply@somehost.local',  
+                    [email], 
                     fail_silently=False,
                 )
                 return redirect('contact')
@@ -53,12 +50,6 @@ def checkout(request):
                 return JsonResponse({'error': 'Invalid header found.'}, status=500)
             except ConnectionRefusedError as e:
                 return JsonResponse({'error': f'Connection refused: {e}'}, status=500)
-
-    if request.user.is_authenticated:
-        cart_items = CartItem.objects.filter(user=request.user)
-    else:
-        session_key = request.session.session_key
-        cart_items = CartItem.objects.filter(session_key=session_key)
 
     delivery_cost = 250
     total_price = sum([cart_items.total for cart_items in cart_items])
@@ -70,14 +61,12 @@ def checkout(request):
 
     if request.method == "POST":
         if 'checkout_form' in request.POST:
-            # Извлечение данных из формы
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
             phone = request.POST.get('phone')
             address = request.POST.get('address')
             city = request.POST.get('city')
             
-            # Создание записи в БД для контакта
             try:
                 page_contact = Billings.objects.create(
                     first_name=first_name,
@@ -103,11 +92,10 @@ def checkout(request):
                     billing=page_contact
                 )
                 items_text += f"{cart_product.product.title} - {cart_product.quantity} шт. по цене {cart_product.price} каждый\n"
-                total_price = Decimal(0)  # Initialize as a Decimal
+                total_price = Decimal(0) 
                 for cart_product in cart_items:
-                    total_price += cart_product.quantity * cart_product.price  # Ensure this is a numeric operation
+                    total_price += cart_product.quantity * cart_product.price
 
-                # Convert to string when displaying
                 total_price_display = f"{total_price:.2f}"
                 
             message = f"""

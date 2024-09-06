@@ -277,7 +277,7 @@
                             <ul class="row list-products auto-clear equal-container product-grid">
                                 {% for product in products %}
                                 <li class="product-item col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-                                    <div class="product-inner equal-element">
+                                    <div style="border-radius: 10px;" class="product-inner equal-element">
                                         <div class="product-top">
                                             {% if product.id in new_products_indices %}
                                             <div class="flash">
@@ -291,7 +291,7 @@
                                             <div class="thumb-inner">
                                                 <a href="{% url 'product_detail' product.id %}">
                                                     {% if product.image != "no_image.jpg" %}
-                                                    <img src="{{ product.image.url }}">
+                                                    <img style="border-radius: 10px;" src="{{ product.image.url }}">
                                                     {% else %}
                                                     <img src="{% static 'assets/images/icon/default.png' %}" alt="Default Image">
                                                     {% endif %}
@@ -326,7 +326,7 @@
                                 {% for product in products %}
                                 {% if product.category == category %}
                                 <li class="product-item col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
-                                    <div class="product-inner equal-element">
+                                    <div style="border-radius: 10px;" class="product-inner equal-element">
                                         <div class="product-top">
                                             {% if product.id in new_products_indices %}
                                             <div class="flash">
@@ -340,7 +340,7 @@
                                             <div class="thumb-inner">
                                                 <a href="{% url 'product_detail' product.id %}">
                                                     {% if product.image != "no_image.jpg" %}
-                                                    <img src="{{ product.image.url }}">
+                                                    <img style="border-radius: 10px;"src="{{ product.image.url }}">
                                                     {% else %}
                                                     <img src="{% static 'assets/images/icon/default.png' %}" alt="Default Image">
                                                     {% endif %}
@@ -379,7 +379,7 @@
                     <div class="col-lg-7 col-md-7 col-sm-12">
                         <div class="banner">
                             <div class="item-banner style11">
-                                <div class="inner1" style=" background-image: url('{% static 'assets/images/Group 50.png' %}');" >
+                                <div class="inner1" style="border-radius: 10px; background-image: url('{% static 'assets/images/Group 50.png' %}');" >
                                     <div class="banner-content">
                                         <h4 class="ysera-subtitle">График работы</h4>
                                         <div class="description">
@@ -397,7 +397,7 @@
                     </div>
                     <div class="col-lg-5 col-md-5 col-sm-12">
                         <div class="ysera-testimonials-wrapp">
-                            <div class="ysera-testimonials default">
+                            <div style="border-radius: 10px;" class="ysera-testimonials default">
                                 <div class="owl-slick equal-container"
                                      data-slick='{"autoplay":false, "autoplaySpeed":1000, "arrows":false, "dots":true, "infinite":true, "speed":800}'
                                      data-responsive='[{"breakpoint":"2000","settings":{"slidesToShow":1}}]'>

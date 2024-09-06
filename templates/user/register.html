@@ -74,7 +74,7 @@
                 <div class="content-area col-lg-6 col-md-8 col-sm-12 col-xs-12">
                     <div class="site-main">
                         <h3 class="custom_blog_title">Регистрация</h3>
-                        <div class="login-item">
+                        <div style="border-radius: 10px;" class="login-item">
                             <h5 class="title-login">Зарегистрироваться</h5>
                             <form id="registrationForm" class="register" method="POST" action="">
                                 {% csrf_token %}
@@ -87,7 +87,7 @@
                                 </p>
                                 <p class="form-row form-row-wide">
                                     <label class="text">Почта</label>
-                                    <input id="email" name="email" type="email" class="input-text">
+                                    <input style="border-radius: 10px;" id="email" name="email" type="email" class="input-text">
                                     {% if email and errors.email %}
                                         <div id="emailError" style="color: red;">{{ errors.email }}</div>
                                     {% endif %}
@@ -95,7 +95,7 @@
                                 <p class="form-row form-row-wide">
                                     <label class="text">Пароль</label>
                                     <div class="password-container">
-                                        <input id="password" name="password" type="password" class="input-text">
+                                        <input style="border-radius: 10px;" id="password" name="password" type="password" class="input-text">
                                         <button type="button" class="toggle-password" onclick="togglePassword('password')">
                                             <i class="fa fa-eye"></i>
                                         </button>
@@ -107,7 +107,7 @@
                                 <p class="form-row form-row-wide">
                                     <label class="text">Повторите пароль</label>
                                     <div class="password-container">
-                                        <input id="confirm_password" title="confirm_password" name="confirm_password" type="password" class="input-text">
+                                        <input style="border-radius: 10px;" id="confirm_password" title="confirm_password" name="confirm_password" type="password" class="input-text">
                                         <button type="button" class="toggle-password" onclick="togglePassword('confirm_password')">
                                             <i class="fa fa-eye"></i>
                                         </button>
@@ -176,7 +176,7 @@
                                     <a href="{% url 'user_login' %}" class="label-text" style="display: inline-block; margin-left: 5px;">Войти</a>
                                 </p>
                                 <p>
-                                    <input type="submit" name="register_button" class="button-submit" value="Зарегистрироваться">
+                                    <input style="border-radius: 100px;" type="submit" name="register_button" class="button-submit" value="Зарегистрироваться">
                                 </p>
                             </form>
                         </div>
